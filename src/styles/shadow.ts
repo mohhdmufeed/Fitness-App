@@ -20,7 +20,7 @@ export default {
     elevation: 3
   },
   CTA_GLOW: {
-    shadowColor: '#16BC85',
+    shadowColor: '#8B9A60',
     shadowOffset: {
       width: 0,
       height: 4
@@ -30,7 +30,7 @@ export default {
     elevation: 4
   },
   ICON_GLOW: {
-    shadowColor: '#16BC85',
+    shadowColor: '#8B9A60',
     shadowOffset: {
       width: 0,
       height: 12

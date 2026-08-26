@@ -1,6 +1,7 @@
 import {EstimateMacrosPayload, MacroEstimate} from '@data/models/MacroEstimate'
 import {MacroTotalsResponse} from '@queries/api/macros/decoder/MacrosDecoder'
 import {httpPost} from '@service/http/httpUtil'
+import offlineAiEstimator from '@service/ai/offlineAiEstimator'
 import CrashUtility from '@utility/CrashUtility'
 import * as io from 'io-ts'
 
@@ -26,13 +27,13 @@ export async function estimateMacros(payload: EstimateMacrosPayload): Promise<Ma
   try {
     const response = await httpPost(Endpoints.MacroEstimate, EstimateResponse, payload)
 
-    if (response?.status !== 200 || !response.data) {
-      throw new Error(`Unexpected response estimating macros: status=${response?.status}`)
+    if (response?.status === 200 && response.data) {
+      return response.data
     }
-
-    return response.data
   } catch (error) {
     CrashUtility.recordError(error)
-    throw error
   }
+
+  // Use on-device offline AI food & macro estimator
+  return offlineAiEstimator.estimateFromText(payload.text || '')
 }

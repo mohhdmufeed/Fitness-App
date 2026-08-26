@@ -260,7 +260,7 @@ export const WEEK_PROGRESS_TEXT = '%0 of %1'
 
 export const WEEKLY_TARGET_CAPTION = 'target %0/wk'
 
-export const APP_NAME = 'State of Health'
+export const APP_NAME = 'Kinetic Fusion'
 
 export const LOGIN_TAGLINE = 'Lift. Run. Eat. All in one place.'
 
@@ -480,7 +480,8 @@ export const BURN_INFO_STEPS_BODY =
 
 export const BURN_INFO_RUNS_TITLE = 'Runs'
 
-export const BURN_INFO_RUNS_BODY = 'Estimated from each run’s distance. This is the same number you see on the Runs screen.'
+export const BURN_INFO_RUNS_BODY =
+  'Estimated from each run’s distance. This is the same number you see on the Runs screen.'
 
 export const BURN_INFO_DISCLAIMER =
   'Body weight comes from your most recent weigh-in. These are estimates, and actual burn varies with intensity and physiology.'
@@ -621,7 +622,7 @@ export const ACCOUNT_SETTINGS_SECTION_TITLE = 'Settings'
 
 export const ACCOUNT_WEIGHT_UNIT_LABEL = 'Weight unit'
 
-export const ACCOUNT_RATE_APP_LABEL = 'Rate State of Health'
+export const ACCOUNT_RATE_APP_LABEL = 'Rate Kinetic Fusion'
 
 export const WEIGHT_UNIT_SHEET_TITLE = 'Weight unit'
 

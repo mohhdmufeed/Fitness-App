@@ -80,6 +80,7 @@ export const stepServings = (servings: number, direction: 1 | -1): number => {
 
   if (direction === 1) {
     const next = STEP_FRACTIONS.find(f => f > fraction + FRACTION_EPSILON)
+
     return roundServings(next === undefined ? whole + 1 : whole + next)
   }
 

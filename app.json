@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "State of Health",
-    "slug": "fitness-tracking-app",
+    "name": "Kinetic Fusion",
+    "slug": "kinetic-fusion",
     "version": "2.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,22 +12,22 @@
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
-      "bundleIdentifier": "com.stateofhealh.tracker",
+      "bundleIdentifier": "com.kineticfusion.tracker",
       "icon": "./assets/icon.png",
       "buildNumber": "30",
       "usesAppleSignIn": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "NSLocationWhenInUseUsageDescription": "State of Health uses your location while you're running to track your route, distance, and pace.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "State of Health uses your location to track your run route, distance, and pace even when the app is in the background or your screen is locked, so tracking doesn't stop mid-run.",
-        "NSLocationAlwaysUsageDescription": "State of Health uses your location to track your run route, distance, and pace even when the app is in the background or your screen is locked, so tracking doesn't stop mid-run.",
+        "NSLocationWhenInUseUsageDescription": "Kinetic Fusion uses your location while you're running to track your route, distance, and pace.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Kinetic Fusion uses your location to track your run route, distance, and pace even when the app is in the background or your screen is locked, so tracking doesn't stop mid-run.",
+        "NSLocationAlwaysUsageDescription": "Kinetic Fusion uses your location to track your run route, distance, and pace even when the app is in the background or your screen is locked, so tracking doesn't stop mid-run.",
         "UIBackgroundModes": [
           "location"
         ]
       }
     },
     "android": {
-      "package": "com.stateofhealh.tracker",
+      "package": "com.kineticfusion.tracker",
       "googleServicesFile": "./google-services.json"
     },
     "plugins": [
@@ -35,8 +35,8 @@
       [
         "expo-image-picker",
         {
-          "cameraPermission": "State of Health uses your camera to snap meals and nutrition labels so AI can estimate calories and macros.",
-          "photosPermission": "State of Health accesses your photo library so you can pick a meal or nutrition-label photo for AI estimation."
+          "cameraPermission": "Kinetic Fusion uses your camera to snap meals and nutrition labels so AI can estimate calories and macros.",
+          "photosPermission": "Kinetic Fusion accesses your photo library so you can pick a meal or nutrition-label photo for AI estimation."
         }
       ],
       "@react-native-firebase/app",
@@ -62,8 +62,8 @@
       [
         "expo-speech-recognition",
         {
-          "microphonePermission": "State of Health uses your microphone so you can speak what you ate and let AI estimate calories and macros.",
-          "speechRecognitionPermission": "State of Health uses speech recognition to turn what you say into text for AI meal estimation."
+          "microphonePermission": "Kinetic Fusion uses your microphone so you can speak what you ate and let AI estimate calories and macros.",
+          "speechRecognitionPermission": "Kinetic Fusion uses speech recognition to turn what you say into text for AI meal estimation."
         }
       ],
       [
@@ -77,8 +77,8 @@
       [
         "@kingstinct/react-native-healthkit",
         {
-          "NSHealthShareUsageDescription": "State of Health reads your step count to show your daily activity and estimate calories burned.",
-          "NSHealthUpdateUsageDescription": "State of Health does not currently write any data to Apple Health.",
+          "NSHealthShareUsageDescription": "Kinetic Fusion reads your step count to show your daily activity and estimate calories burned.",
+          "NSHealthUpdateUsageDescription": "Kinetic Fusion does not currently write any data to Apple Health.",
           "background": false
         }
       ],

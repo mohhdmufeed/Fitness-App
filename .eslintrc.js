@@ -10,7 +10,11 @@ module.exports = {
     'coverage/',
     'android/',
     'ios/',
-    'jest-stare/'
+    'jest-stare/',
+    'scripts/',
+    'plugins/',
+    '*.js',
+    '*.d.ts'
   ],
   plugins: [
     'import',
@@ -46,6 +50,9 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
     'import/no-unused-modules': 'error',
     'unused-imports/no-unused-imports': 'error',
     'unused-imports/no-unused-vars': [

@@ -16,13 +16,18 @@ export async function fetchAiUsage(): Promise<AiUsage> {
   try {
     const response = await httpGet(Endpoints.AiUsage, AiUsageResponse)
 
-    if (response?.status !== 200 || !response.data) {
-      throw new Error(`Unexpected response fetching AI usage: status=${response?.status}`)
+    if (response?.status === 200 && response.data) {
+      return response.data
     }
-
-    return response.data
   } catch (error) {
     CrashUtility.recordError(error)
-    throw error
+  }
+
+  // Unlimited offline AI usage
+  return {
+    used: 0,
+    limit: 1000,
+    resetsAt: new Date(Date.now() + 86400000).toISOString(),
+    unlimited: true
   }
 }

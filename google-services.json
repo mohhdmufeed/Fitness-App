@@ -1,0 +1,34 @@
+{
+  "project_info": {
+    "project_number": "65554130864",
+    "project_id": "kinetic-fusion-app",
+    "storage_bucket": "kinetic-fusion-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65554130864:android:1234567890abcdef",
+        "android_client_info": {
+          "package_name": "com.kineticfusion.tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65554130864-7ufv8ftr9q1vgikl77e4m5dsefb8it41.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyFakeKeyForAndroidDevelopment12345"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

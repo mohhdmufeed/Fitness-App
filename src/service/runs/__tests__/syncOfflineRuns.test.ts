@@ -190,7 +190,10 @@ describe('syncOfflineRuns', () => {
     )
 
     mockStorage.readAll.mockResolvedValue(parked)
-    mockCreateRun.mockImplementation(async run => ({run: {...run, id: `remote-${run.localId}`, synced: true}, newRecords: []}))
+    mockCreateRun.mockImplementation(async run => ({
+      run: {...run, id: `remote-${run.localId}`, synced: true},
+      newRecords: []
+    }))
 
     await syncOfflineRuns({retryParked: true})
 

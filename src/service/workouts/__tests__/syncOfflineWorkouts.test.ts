@@ -36,8 +36,7 @@ const mockFindLocalWorkoutByDate = offlineWorkoutStorageService.findLocalWorkout
 const mockSaveWorkoutDay = saveWorkoutDay as jest.Mock
 const mockUpdateWorkoutDay = updateWorkoutDay as jest.Mock
 const mockIsServerFailureError = require('@utility/isServerFailureError').isServerFailureError as jest.Mock
-const mockIsPermanentRejectionError = require('@utility/isServerFailureError')
-  .isPermanentRejectionError as jest.Mock
+const mockIsPermanentRejectionError = require('@utility/isServerFailureError').isPermanentRejectionError as jest.Mock
 
 const TODAY_ISO = '2025-10-20'
 

@@ -1,6 +1,7 @@
 import {DailySummary} from '@data/models/DailyMacros'
 import {PaginationResponse} from '@queries/api/macros/decoder/MacrosDecoder'
 import {httpGet} from '@service/http/httpUtil'
+import offlineMacroStorageService from '@service/macros/OfflineMacroStorageService'
 import CrashUtility from '@utility/CrashUtility'
 import * as io from 'io-ts'
 
@@ -46,13 +47,22 @@ export async function fetchMacrosHistory(page: number, limit: number = 30): Prom
     const url = `${Endpoints.MacrosHistory}?page=${page}&limit=${limit}`
     const response = await httpGet(url, MacrosHistoryResponse)
 
-    if (response?.status !== 200 || !response.data) {
-      throw new Error(`Unexpected response fetching macros history: status=${response?.status}`)
+    if (response?.status === 200 && response.data) {
+      return response.data
     }
-
-    return response.data
   } catch (error) {
     CrashUtility.recordError(error)
-    throw error
+  }
+
+  // Fallback to local offline history
+  const allDays = await offlineMacroStorageService.getHistory()
+  return {
+    days: allDays,
+    pagination: {
+      page,
+      limit,
+      total: allDays.length,
+      totalPages: 1
+    }
   }
 }

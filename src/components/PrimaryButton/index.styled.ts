@@ -20,9 +20,9 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   label: {
-    fontWeight: '600',
+    fontWeight: '700',
     fontSize: FontSize.H3,
-    color: Theme.colors.white,
+    color: Theme.colors.onInverse,
     marginLeft: Spacing.XX_SMALL,
     marginRight: Spacing.XX_SMALL
   }

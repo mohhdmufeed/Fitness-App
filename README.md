@@ -1,12 +1,8 @@
 <div align="center">
 
-![State of Health_LOGO](https://github.com/Kennygunderman/state-of-health-tracker/assets/16354865/b6d58f3a-973d-44e0-8ccb-216e3d358eeb)
-
-# State of Health
+# Kinetic Fusion
 
 **Lift. Eat. Run. One app keeps score.**
-
-[**Download on the App Store**](https://apps.apple.com/us/app/state-of-health/id6470658244?platform=iphone) · [**thestateofhealth.com**](https://thestateofhealth.com/)
 
 ![React Native](https://img.shields.io/badge/React%20Native-0.86-61DAFB?logo=react&logoColor=white&labelColor=20232a)
 ![Expo](https://img.shields.io/badge/Expo-SDK%2057-000020?logo=expo&logoColor=white)
@@ -18,7 +14,7 @@
 
 ---
 
-Your training and your diet are the same goal, so why are they in separate apps? State of Health puts your workouts, macros, and runs in one place, with none of the bloat that makes most fitness apps a chore to open.
+Your training and your diet are the same goal, so why are they in separate apps? Kinetic Fusion puts your workouts, macros, and runs in one place, with none of the bloat that makes most fitness apps a chore to open.
 
 <div align="center">
 <table>

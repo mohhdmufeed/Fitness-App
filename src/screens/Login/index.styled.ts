@@ -105,5 +105,20 @@ export default StyleSheet.create({
     fontSize: FontSize.PARAGRAPH,
     fontWeight: '600',
     color: Theme.colors.accentGreen
+  },
+  offlineButton: {
+    backgroundColor: Theme.colors.card,
+    borderWidth: 1,
+    borderColor: Theme.colors.accentGreen,
+    borderRadius: BorderRadius.INPUT,
+    paddingVertical: Spacing.MEDIUM,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: Spacing.X_SMALL
+  },
+  offlineButtonText: {
+    fontSize: FontSize.H3,
+    fontWeight: '600',
+    color: Theme.colors.accentGreen
   }
 })

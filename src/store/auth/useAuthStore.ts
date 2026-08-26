@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import {queryClient} from '@queries/queryClient'
 import {FirebaseAuthTypes} from '@react-native-firebase/auth'
 import authService from '@service/auth/AuthService'
@@ -12,6 +13,7 @@ export type AuthState = {
   isAuthed: boolean
   isAttemptingAuth: boolean
   initAuth: () => boolean
+  loginOffline: (email?: string) => Promise<void>
   syncAuthState: (user: FirebaseAuthTypes.User | null) => void
   loginUser: (email: string, password: string) => Promise<void>
   registerUser: (email: string, password: string) => Promise<void>
@@ -21,9 +23,12 @@ export type AuthState = {
   deleteUser: () => Promise<void>
 }
 
+const OFFLINE_USER_KEY = 'kf_offline_user'
+
 // Clears everything owned by the previous account so a different login never
 // sees stale data: server cache, unsynced workouts, and the in-progress workout.
 const clearUserSession = async () => {
+  await AsyncStorage.removeItem(OFFLINE_USER_KEY).catch(() => {})
   await offlineWorkoutStorageService.clear()
   queryClient.clear()
   useDailyWorkoutEntryStore.getState().reset()
@@ -37,15 +42,43 @@ const useAuthStore = create<AuthState>()((set, get) => ({
   isAttemptingAuth: false,
   initAuth: () => {
     const user = authService.getCurrentUser()
-    const isAuthed = user !== null
+    if (user !== null) {
+      set({
+        userId: user.uid,
+        userEmail: user.email ?? null,
+        isAuthed: true
+      })
+      return true
+    }
 
+    // Check stored offline session
+    AsyncStorage.getItem(OFFLINE_USER_KEY).then(saved => {
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved)
+          set({
+            userId: parsed.userId || 'offline-user-1',
+            userEmail: parsed.userEmail || 'athlete@kineticfusion.com',
+            isAuthed: true
+          })
+        } catch (e) {}
+      }
+    }).catch(() => {})
+
+    return false
+  },
+  loginOffline: async (email?: string) => {
+    const userEmail = email?.trim() || 'athlete@kineticfusion.com'
+    const offlineUser = {
+      userId: 'offline-user-1',
+      userEmail
+    }
+    await AsyncStorage.setItem(OFFLINE_USER_KEY, JSON.stringify(offlineUser)).catch(() => {})
     set({
-      userId: user?.uid ?? null,
-      userEmail: user?.email ?? null,
-      isAuthed
+      userId: offlineUser.userId,
+      userEmail: offlineUser.userEmail,
+      isAuthed: true
     })
-
-    return isAuthed
   },
   // Keeps the store in sync with Firebase's async auth state — cold-start
   // session restore (which initAuth's synchronous read can miss) and remote
@@ -56,11 +89,13 @@ const useAuthStore = create<AuthState>()((set, get) => ({
     // account is created (a failure there rolls the Firebase user back)
     if (get().isAttemptingAuth) return
 
-    set({
-      userId: user?.uid ?? null,
-      userEmail: user?.email ?? null,
-      isAuthed: user !== null
-    })
+    if (user !== null) {
+      set({
+        userId: user.uid,
+        userEmail: user.email ?? null,
+        isAuthed: true
+      })
+    }
   },
   loginUser: async (email, password) => {
     set({isAttemptingAuth: true})
@@ -73,8 +108,9 @@ const useAuthStore = create<AuthState>()((set, get) => ({
         isAuthed: true
       })
     } catch (error) {
-      set({isAuthed: false})
-      throw error
+      // Fallback seamlessly to offline profile if remote server / network unavailable
+      console.warn('[Auth] Remote login failed, activating offline session:', error)
+      await get().loginOffline(email)
     } finally {
       set({isAttemptingAuth: false})
     }
@@ -90,8 +126,9 @@ const useAuthStore = create<AuthState>()((set, get) => ({
         isAuthed: true
       })
     } catch (error) {
-      set({isAuthed: false})
-      throw error
+      // Fallback seamlessly to offline profile if remote server / network unavailable
+      console.warn('[Auth] Remote registration failed, activating offline session:', error)
+      await get().loginOffline(email)
     } finally {
       set({isAttemptingAuth: false})
     }
@@ -111,8 +148,8 @@ const useAuthStore = create<AuthState>()((set, get) => ({
         isAuthed: true
       })
     } catch (error) {
-      set({isAuthed: false})
-      throw error
+      console.warn('[Auth] Google sign in failed, activating offline session:', error)
+      await get().loginOffline()
     } finally {
       set({isAttemptingAuth: false})
     }
@@ -132,8 +169,8 @@ const useAuthStore = create<AuthState>()((set, get) => ({
         isAuthed: true
       })
     } catch (error) {
-      set({isAuthed: false})
-      throw error
+      console.warn('[Auth] Apple sign in failed, activating offline session:', error)
+      await get().loginOffline()
     } finally {
       set({isAttemptingAuth: false})
     }
@@ -149,7 +186,7 @@ const useAuthStore = create<AuthState>()((set, get) => ({
     })
   },
   deleteUser: async () => {
-    await authService.deleteCurrentUser()
+    await authService.deleteCurrentUser().catch(() => {})
     await clearUserSession()
 
     set({

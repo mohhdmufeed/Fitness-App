@@ -22,7 +22,12 @@ module.exports = function (api) {
             '@hooks': './src/hooks',
             '@utility': './src/utility',
             '@navigation': './src/navigation',
-            '@assets': './src/assets'
+            '@assets': './src/assets',
+            'react-native-linear-gradient': './src/utility/linearGradientShim.js',
+            'react-native/Libraries/Utilities/codegenNativeComponent':
+              './src/utility/codegenNativeComponentShim.js',
+            'react-native-keyboard-aware-scroll-view':
+              './src/utility/keyboardAwareScrollViewShim.js'
           }
         }
       ],

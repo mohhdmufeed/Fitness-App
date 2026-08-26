@@ -60,10 +60,7 @@ const DailySummaryCard = ({totals, targets}: Props) => {
           )}
         </Svg>
 
-        <TouchableOpacity
-          style={styles.ringCenter}
-          activeOpacity={0.6}
-          onPress={() => setIsTargetModalVisible(true)}>
+        <TouchableOpacity style={styles.ringCenter} activeOpacity={0.6} onPress={() => setIsTargetModalVisible(true)}>
           <Text style={styles.balanceValue}>{formatCalories(balance.amount)}</Text>
 
           <Text style={[styles.balanceLabel, balance.isOver && styles.balanceLabelOver]}>

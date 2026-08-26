@@ -23,5 +23,5 @@ export const queryClient = new QueryClient({
 
 export const asyncStoragePersister = createAsyncStoragePersister({
   storage: AsyncStorage,
-  key: 'soh-query-cache'
+  key: 'kinetic-fusion-query-cache'
 })

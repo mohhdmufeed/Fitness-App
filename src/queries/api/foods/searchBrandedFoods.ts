@@ -1,5 +1,6 @@
 import {BrandedFood} from '@data/models/BrandedFood'
 import {httpGet} from '@service/http/httpUtil'
+import offlineFoodStorageService from '@service/foods/OfflineFoodStorageService'
 import CrashUtility from '@utility/CrashUtility'
 import * as io from 'io-ts'
 
@@ -24,22 +25,32 @@ export async function searchBrandedFoods(query: string): Promise<BrandedFood[]> 
   try {
     const response = await httpGet(Endpoints.BrandedFoodSearch(query), BrandedFoodSearchResponse)
 
-    if (response?.status !== 200 || !response.data) {
-      throw new Error(`Unexpected response searching branded foods: status=${response?.status}`)
+    if (response?.status === 200 && response.data) {
+      return response.data.items.map(item => ({
+        id: item.id,
+        name: item.name,
+        brand: item.brand ?? null,
+        servingText: item.servingText ?? null,
+        calories: item.calories,
+        protein: item.protein,
+        carbs: item.carbs,
+        fat: item.fat
+      }))
     }
-
-    return response.data.items.map(item => ({
-      id: item.id,
-      name: item.name,
-      brand: item.brand ?? null,
-      servingText: item.servingText ?? null,
-      calories: item.calories,
-      protein: item.protein,
-      carbs: item.carbs,
-      fat: item.fat
-    }))
   } catch (error) {
     CrashUtility.recordError(error)
-    throw error
   }
+
+  // Offline branded food search fallback
+  const {foods} = await offlineFoodStorageService.searchFoods(query, 1, 20)
+  return foods.map(item => ({
+    id: item.id,
+    name: item.name,
+    brand: item.brand ?? null,
+    servingText: item.servingUnit ? `${item.servingAmount} ${item.servingUnit}` : null,
+    calories: item.calories,
+    protein: item.protein,
+    carbs: item.carbs,
+    fat: item.fat
+  }))
 }

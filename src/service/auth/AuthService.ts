@@ -221,12 +221,20 @@ class AuthService {
   }
 
   getCurrentUser() {
-    return auth().currentUser
+    try {
+      return auth().currentUser
+    } catch {
+      return null
+    }
   }
 
   /** Subscribes to Firebase auth state (cold-start restore, remote sign-out). Returns the unsubscribe function. */
   subscribeToAuthChanges(listener: (user: FirebaseAuthTypes.User | null) => void): () => void {
-    return auth().onAuthStateChanged(listener)
+    try {
+      return auth().onAuthStateChanged(listener)
+    } catch {
+      return () => {}
+    }
   }
 
   async logOutUser() {

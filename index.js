@@ -1,4 +1,35 @@
 import 'react-native-get-random-values'
+import {Platform} from 'react-native'
+import firebase from '@react-native-firebase/app'
+
+if (Platform.OS === 'web') {
+  const RN = require('react-native')
+  const React = require('react')
+  if (!RN.codegenNativeComponent) {
+    RN.codegenNativeComponent = () => {
+      return React.forwardRef((props, ref) => React.createElement(RN.View || 'div', {...props, ref}))
+    }
+  }
+  if (!RN.requireNativeComponent) {
+    RN.requireNativeComponent = () => {
+      return React.forwardRef((props, ref) => React.createElement(RN.View || 'div', {...props, ref}))
+    }
+  }
+  try {
+    if (!firebase.apps || firebase.apps.length === 0) {
+      firebase.initializeApp({
+        apiKey: 'AIzaSyFakeKeyForWebClientMocking123',
+        appId: '1:65554130864:web:mockAppId',
+        projectId: 'kinetic-fusion',
+        databaseURL: 'https://kinetic-fusion.firebaseio.com',
+        messagingSenderId: '65554130864',
+        storageBucket: 'kinetic-fusion.appspot.com'
+      })
+    }
+  } catch (e) {
+    // Ignore if already initialized or unavailable
+  }
+}
 
 // Registers the background GPS TaskManager task at module top level so it
 // fires even on headless/background relaunches (the app process the OS

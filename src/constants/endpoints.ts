@@ -1,4 +1,4 @@
-import { SOH_API_BASE_URL } from '@env'
+import {SOH_API_BASE_URL} from '@env'
 
 // Host comes from the environment: local .env for `expo run`, EAS environment
 // variables for builds (development/preview → dev API, production → prod).

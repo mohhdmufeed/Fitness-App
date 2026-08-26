@@ -1,35 +1,36 @@
 import {DefaultTheme} from '@react-navigation/native'
 
-// "Clean & Calm" dark palette — deep sage blacks, charcoal cards, one green
-// accent family. Legacy color keys are kept and remapped so older screens
-// stay coherent until they are migrated.
-const page = '#0C1310'
-const card = '#161F1A'
-const inset = '#202B25'
-const tile = '#1B2620'
-const track = '#232F28'
+// "Kinetic Fusion Dark Luxury" palette matching screenshot:
+// Ultra dark obsidian background, charcoal cards, and muted olive/sage accent.
+const page = '#0D0E11'
+const card = '#16181B'
+const inset = '#1C1E23'
+const tile = '#1A1C20'
+const track = '#202329'
 
-const hairline = '#222D26'
-const inputBorder = '#28332C'
-const grid = '#1E2822'
-const dashedBorder = '#4B5750'
+const hairline = '#202227'
+const inputBorder = '#272A31'
+const grid = '#1A1C21'
+const dashedBorder = '#3E434D'
 
-const textPrimary = '#EDF3EF'
-const textSecondary = '#9CA9A2'
-const textMuted = '#7E8B84'
-const textFaint = '#6E7B74'
-const textDisabled = '#4B5750'
+const textPrimary = '#FFFFFF'
+const textSecondary = '#8E939D'
+const textMuted = '#6C717A'
+const textFaint = '#4D5158'
+const textDisabled = '#3B3E45'
 
-const green = '#16BC85'
-const teal = '#1CB6BF'
-const lime = '#7ECC53'
-const greenTint = '#13342A'
-const greenOnTint = '#5FDCAC'
-const tealTint = '#14282E'
+// Olive / Sage accent matching screenshot CTA button (#8B9A60)
+const green = '#8B9A60'
+const teal = '#6E8A7D'
+const lime = '#9EB16F'
+const greenTint = '#1B2115'
+const greenOnTint = '#A5B978'
+const tealTint = '#16211C'
 const danger = '#E2685E'
 const dangerTint = '#39241F'
+const primaryButtonText = '#11140C'
 
-const white = '#fff'
+const white = '#ffffff'
 
 export const Theme = {
   dark: true,
@@ -45,20 +46,21 @@ export const Theme = {
     secondaryLighter: green,
     white,
     text: textPrimary,
-    navBar: '#101814',
+    navBar: '#0E0F12',
     chip: tile,
     border: hairline,
     fireOrange: '#FF9502',
     error: danger,
     errorLight: dangerTint,
     success: green,
-    overlayBackdrop: '#000',
+    overlayBackdrop: '#000000',
 
     card,
     inset,
     tile,
     track,
-    onInverse: page,
+    onInverse: primaryButtonText,
+    primaryButtonText,
     hairline,
     inputBorder,
     grid,
@@ -75,10 +77,10 @@ export const Theme = {
     tealTint,
     danger,
     dangerTint,
-    barMuted: '#33453B',
-    barMid: '#57A67F',
+    barMuted: '#242A1D',
+    barMid: '#58683E',
     barActive: green,
-    loginGradientStart: '#0B120E',
-    loginGradientEnd: '#0E1712'
+    loginGradientStart: '#0B0C0E',
+    loginGradientEnd: '#101216'
   }
 }

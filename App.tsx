@@ -31,7 +31,7 @@ const App = () => {
   const {isAuthed} = useAuthStore()
 
   useEffect(() => {
-    SplashScreen.hideAsync()
+    SplashScreen.hideAsync().catch(() => {})
   }, [])
 
   // Keep the auth store in sync with Firebase's async auth state — cold-start

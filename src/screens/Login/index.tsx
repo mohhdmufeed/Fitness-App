@@ -51,8 +51,13 @@ const LogInScreen = () => {
 
   const isAttemptingAuth = useAuthStore(state => state.isAttemptingAuth)
   const loginUser = useAuthStore(state => state.loginUser)
+  const loginOffline = useAuthStore(state => state.loginOffline)
   const signInWithGoogle = useAuthStore(state => state.signInWithGoogle)
   const signInWithApple = useAuthStore(state => state.signInWithApple)
+
+  const handleContinueOffline = async () => {
+    await loginOffline(email)
+  }
 
   const validate = (): boolean => {
     const emailIsValid = isValidEmail(email)
@@ -170,6 +175,10 @@ const LogInScreen = () => {
               </TouchableOpacity>
 
               <PrimaryButton isLoading={isAttemptingAuth} label={AUTH_LOG_IN_BUTTON_TEXT} onPress={handleLogIn} />
+
+              <TouchableOpacity style={styles.offlineButton} onPress={handleContinueOffline} activeOpacity={0.7}>
+                <Text style={styles.offlineButtonText}>Continue Offline (No Account Needed)</Text>
+              </TouchableOpacity>
 
               <View style={styles.dividerRow}>
                 <View style={styles.dividerLine} />
