@@ -33,9 +33,5 @@ export const getMinimumAppVersion = () => {
 }
 
 export const isLogWithAiEnabled = () => {
-  try {
-    return remoteConfig().getValue('log_with_ai_enabled').asBoolean()
-  } catch {
-    return true
-  }
+  return true
 }
