@@ -37,12 +37,13 @@ const TAB_ICON_SIZE = 22
 const HomeTabs = () => {
   return (
     <Tab.Navigator
+      initialRouteName={'WorkoutsStack'}
       screenOptions={({route}) => ({
         freezeOnBlur: true,
         sceneStyle: {backgroundColor: Theme.colors.background},
         tabBarIcon: ({color}) => {
-          if (route.name === 'MacrosStack') return <PieChartIcon color={color} size={TAB_ICON_SIZE} />
           if (route.name === 'WorkoutsStack') return <BarbellIcon color={color} size={TAB_ICON_SIZE} />
+          if (route.name === 'MacrosStack') return <PieChartIcon color={color} size={TAB_ICON_SIZE} />
           if (route.name === 'ProgressStack') return <PulseIcon color={color} size={TAB_ICON_SIZE} />
           if (route.name === Screens.RUNS) return <RunIcon color={color} size={TAB_ICON_SIZE} />
           if (route.name === Screens.ACCOUNT) return <AccountIcon color={color} size={TAB_ICON_SIZE} />
@@ -60,9 +61,9 @@ const HomeTabs = () => {
           backgroundColor: Theme.colors.navBar
         }
       })}>
-      <Tab.Screen name={'MacrosStack'} component={MacrosStack} options={{title: MACROS_TITLE}} />
-
       <Tab.Screen name={'WorkoutsStack'} component={WorkoutsStack} options={{title: WORKOUTS_TITLE}} />
+
+      <Tab.Screen name={'MacrosStack'} component={MacrosStack} options={{title: MACROS_TITLE}} />
 
       <Tab.Screen name={'ProgressStack'} component={ProgressStack} options={{title: PROGRESS_TITLE}} />
 
