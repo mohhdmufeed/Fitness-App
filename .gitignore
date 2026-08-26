@@ -111,3 +111,6 @@ dist/
 # @end expo-cli
 
 .claude/
+
+# APK builds — too large for GitHub (>100 MB), keep locally only
+*.apk
