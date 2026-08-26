@@ -22,16 +22,21 @@ export const RUN_LOCATION_TASK = 'run-location-task'
 // runPointBuffer.ts for how the active run id is threaded through). No
 // filtering/math runs here; that happens later in RunSessionService.stop()
 // via runMath.
-TaskManager.defineTask(RUN_LOCATION_TASK, async ({data, error}) => {
-  if (error || !data) {
-    return
-  }
+try {
+  TaskManager.defineTask(RUN_LOCATION_TASK, async ({data, error}) => {
+    if (error || !data) {
+      return
+    }
 
-  const {locations} = data as {locations: Location.LocationObject[]}
+    const {locations} = data as {locations: Location.LocationObject[]}
 
-  if (!locations || locations.length === 0) {
-    return
-  }
+    if (!locations || locations.length === 0) {
+      return
+    }
 
-  await runPointBuffer.appendToActiveRun(locations)
-})
+    await runPointBuffer.appendToActiveRun(locations)
+  })
+} catch (err) {
+  console.warn('[LocationTask] Failed to register task safely:', err)
+}
+

@@ -27,21 +27,53 @@ const Stack = createNativeStackNavigator()
 
 LogBox.ignoreAllLogs(true)
 
+class AppErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean}> {
+  state = {hasError: false}
+  static getDerivedStateFromError() {
+    return {hasError: true}
+  }
+  componentDidCatch(error: any) {
+    console.error('[AppErrorBoundary] Caught render error:', error)
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <GestureHandlerRootView style={{flex: 1, backgroundColor: Theme.colors.background}}>
+          <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+            <NavigationContainer theme={Theme}>
+              <HomeTabs />
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </GestureHandlerRootView>
+      )
+    }
+    return this.props.children
+  }
+}
+
 const App = () => {
   const {isAuthed} = useAuthStore()
 
   useEffect(() => {
-    SplashScreen.hideAsync().catch(() => {})
+    try {
+      SplashScreen.hideAsync().catch(() => {})
+    } catch {}
   }, [])
 
   // Keep the auth store in sync with Firebase's async auth state — cold-start
   // session restore and remote sign-outs both land here
   useEffect(() => {
-    const unsubscribe = authService.subscribeToAuthChanges(user => {
-      useAuthStore.getState().syncAuthState(user)
-    })
+    try {
+      const unsubscribe = authService.subscribeToAuthChanges(user => {
+        try {
+          useAuthStore.getState().syncAuthState(user)
+        } catch {}
+      })
 
-    return unsubscribe
+      return unsubscribe
+    } catch {
+      return () => {}
+    }
   }, [])
 
   // "Today" is captured when the JS bundle loads; an app resumed after
@@ -130,4 +162,10 @@ const App = () => {
   )
 }
 
-export default App
+const RootApp = () => (
+  <AppErrorBoundary>
+    <App />
+  </AppErrorBoundary>
+)
+
+export default RootApp
