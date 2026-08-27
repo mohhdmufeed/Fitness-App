@@ -21,37 +21,39 @@
 <div align="center">
   <table>
     <tr>
-      <td align="center" width="33%">
+      <td align="center" width="25%">
         <b>🔐 Sign In</b><br/><br/>
-        <img src="assets/screenshots/auth_login.png" width="260" alt="Sign In Screen" />
+        <img src="assets/screenshots/auth_login.png" width="240" alt="Sign In Screen" />
       </td>
-      <td align="center" width="33%">
+      <td align="center" width="25%">
         <b>📝 Create Account</b><br/><br/>
-        <img src="assets/screenshots/auth_register.png" width="260" alt="Create Account Screen" />
+        <img src="assets/screenshots/auth_register.png" width="240" alt="Create Account Screen" />
       </td>
-      <td align="center" width="33%">
+      <td align="center" width="25%">
         <b>🏋️ Train & Workouts</b><br/><br/>
-        <img src="assets/screenshots/workouts_screen.png" width="260" alt="Workouts Screen" />
+        <img src="assets/screenshots/workouts_screen.png" width="240" alt="Workouts Screen" />
+      </td>
+      <td align="center" width="25%">
+        <b>🍽️ Macros & Nutrition</b><br/><br/>
+        <img src="assets/screenshots/macros_screen.png" width="240" alt="Macros & Nutrition Screen" />
       </td>
     </tr>
     <tr>
-      <td align="center" width="33%">
-        <b>🍽️ Macros & Nutrition</b><br/><br/>
-        <img src="assets/screenshots/macros_screen.png" width="260" alt="Macros & Nutrition Screen" />
+      <td align="center" width="25%">
+        <b>🏃 Runs & Cardio</b><br/><br/>
+        <img src="assets/screenshots/runs_cardio.png" width="240" alt="Runs & Cardio Screen" />
       </td>
-      <td align="center" width="33%">
+      <td align="center" width="25%">
         <b>📈 Progress & Stats</b><br/><br/>
-        <img src="assets/screenshots/progress_screen.png" width="260" alt="Progress & Stats Screen" />
+        <img src="assets/screenshots/progress_screen.png" width="240" alt="Progress & Stats Screen" />
       </td>
-      <td align="center" width="33%">
-        <b>⚡ Kinetic Fusion</b><br/><br/>
-        <p align="center">
-          <i>• Off-White (#EEEBE3)<br/>
-          • Pure White Cards<br/>
-          • Pastel Red CTA (#D64848)<br/>
-          • Metric Units (kg)<br/>
-          • Offline-First Engine</i>
-        </p>
+      <td align="center" width="25%">
+        <b>👤 Account & Overview</b><br/><br/>
+        <img src="assets/screenshots/account_overview.png" width="240" alt="Account & Overview Screen" />
+      </td>
+      <td align="center" width="25%">
+        <b>🚪 Sign Out Dialog</b><br/><br/>
+        <img src="assets/screenshots/sign_out_dialog.png" width="240" alt="Sign Out Dialog" />
       </td>
     </tr>
   </table>
@@ -83,9 +85,10 @@
 - **Interactive Graphs**: Smooth curved line chart visualizing weight trends over time using `fl_chart`.
 - **Strength Analytics**: Monthly lift progression tracking across compound movements (Bench Press, Back Squat, Deadlift, Overhead Press).
 
-### 👤 5. Overview & Profile
-- **Photo Upload**: Profile avatar with **Camera capture** and **Phone gallery** photo selection via `image_picker`.
-- **Daily Targets**: Customizable calorie targets, weekly workouts, and weight goals.
+### 👤 5. Account & Overview
+- **Profile Photo Picker**: Interactive avatar supporting **Camera capture** and **Phone library** photo uploads via `image_picker`.
+- **Daily Metric Snapshots**: Real-time summary cards for Nutrition, Workout Sets, Bodyweight, and Cardio.
+- **Nutrition & Fitness Targets**: Customizable calorie targets, protein, carbs, and fat goals.
 - **Cloud Sync Status**: Real-time cloud sync indicator.
 
 ---
