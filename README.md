@@ -1,76 +1,170 @@
+# ⚡ Kinetic Fusion — Fitness & Health Tracker
+
 <div align="center">
 
-# Kinetic Fusion
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-**Lift. Eat. Run. One app keeps score.**
+**A high-performance, offline-first mobile fitness and health tracking application built with Flutter, Firebase, and a modern design system.**
 
-![React Native](https://img.shields.io/badge/React%20Native-0.86-61DAFB?logo=react&logoColor=white&labelColor=20232a)
-![Expo](https://img.shields.io/badge/Expo-SDK%2057-000020?logo=expo&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?logo=typescript&logoColor=white)
-![TanStack Query](https://img.shields.io/badge/TanStack%20Query-v5-FF4154?logo=reactquery&logoColor=white)
-![Zustand](https://img.shields.io/badge/Zustand-v5-443E38)
+[Features](#-key-features) • [Screenshots](#-app-screenshots) • [Architecture](#-system-architecture) • [Getting Started](#-getting-started) • [Author](#-author)
 
 </div>
 
 ---
 
-Your training and your diet are the same goal, so why are they in separate apps? Kinetic Fusion puts your workouts, macros, and runs in one place, with none of the bloat that makes most fitness apps a chore to open.
+## 📱 App Screenshots
 
 <div align="center">
-<table>
-  <tr>
-    <td><img src="docs/screenshots/01-log-with-ai.png" width="270" alt="AI food logging" /></td>
-    <td><img src="docs/screenshots/03-workouts.png" width="270" alt="Workout templates" /></td>
-    <td><img src="docs/screenshots/04-runs.png" width="270" alt="GPS run tracking" /></td>
-  </tr>
-  <tr>
-    <td><img src="docs/screenshots/02-macros.png" width="270" alt="Macro tracking" /></td>
-    <td><img src="docs/screenshots/05-progress.png" width="270" alt="Weight progress" /></td>
-    <td><img src="docs/screenshots/06-weekly-goal.png" width="270" alt="Weekly training goals" /></td>
-  </tr>
-</table>
+  <table>
+    <tr>
+      <td align="center" width="33%">
+        <b>🔐 Secure Sign-In</b><br/><br/>
+        <img src="assets/screenshots/auth_login.png" width="260" alt="Login Screen" />
+      </td>
+      <td align="center" width="33%">
+        <b>📝 Account Registration</b><br/><br/>
+        <img src="assets/screenshots/auth_register.png" width="260" alt="Register Screen" />
+      </td>
+      <td align="center" width="33%">
+        <b>🍽️ Macros & Nutrition</b><br/><br/>
+        <img src="assets/screenshots/macros_screen.png" width="260" alt="Macros Screen" />
+      </td>
+    </tr>
+    <tr>
+      <td align="center" width="33%">
+        <b>🤖 AI Food Logging</b><br/><br/>
+        <img src="assets/screenshots/ai_logging.png" width="260" alt="AI Log Screen" />
+      </td>
+      <td align="center" width="33%">
+        <b>👤 Profile & Targets</b><br/><br/>
+        <img src="assets/screenshots/account_overview.png" width="260" alt="Account Screen" />
+      </td>
+      <td align="center" width="33%">
+        <b>🏋️ Workout Tracking</b><br/><br/>
+        <img src="assets/screenshots/macros_screen.png" width="260" alt="Workouts Screen" />
+      </td>
+    </tr>
+  </table>
 </div>
-
-## What it does
-
-**Workouts.** Build templates, start a session, and log sets as you lift. Progressive overload tracking watches every exercise and tells you when it's time to add weight or reps. Set a weekly target and watch the week fill up.
-
-**Macros.** Type "3 eggs, toast with jelly, hash browns" and the AI breaks it into foods with calories and macros you can tweak. Prefer doing it by hand? Search the USDA database, which covers nearly every labeled food in the US, or build your own custom foods.
-
-**Runs.** GPS tracking with your route on the map, pace, speed, and calorie burn. Runs feed into the same daily activity picture as your lifts and steps.
-
-**Progress.** Body weight trends against your goal, strength charts for every exercise, and a full history of everything you've logged. Every day you train or eat, the app keeps the diary for you.
-
-## Under the hood
-
-- React Native 0.86 on the New Architecture, Expo SDK 57
-- TypeScript end to end
-- TanStack Query for server state, Zustand for client state
-- Node + Postgres backend with Prisma
-- Firebase for auth (email, Google Sign-In) and Remote Config
-
-## Development
-
-```bash
-npm install
-npx expo run:ios
-```
-
-## Shipping a release
-
-1. Bump `version` and `buildNumber` in `app.json`
-2. Build and submit:
-
-```bash
-eas build --platform ios --profile production --auto-submit
-```
-
-Or build and submit separately with `eas build --platform ios --profile production` and `eas submit -p ios --latest`.
 
 ---
 
+## ✨ Key Features
+
+### 🏋️ 1. Train & Workout Tracker
+- **Set Logging**: Record exercise sets with weight (**kg**), reps, and completion toggles.
+- **Routines & Templates**: Save and load custom workout splits and exercises.
+- **1RM Strength Estimation**: Automatic Brzycki 1RM progression formulas.
+- **Volume Calculations**: Total accumulated kilograms lifted per workout session.
+
+### 🍽️ 2. Macros & Nutrition
+- **Visual Calorie Gauge**: Real-time circular progress indicator tracking remaining daily calories.
+- **Macronutrient Split**: Progress bars for Protein, Carbohydrates, and Fats.
+- **Meal Organization**: Breakfast, Lunch, Dinner, and Snacks categorization.
+- **AI Food Logger**: Natural language meal estimator powered by offline AI heuristic parsing.
+
+### 🏃 3. Runs & Cardio Tracking
+- **Outdoor GPS Run**: Real-time route, distance (miles), duration, and pace tracking.
+- **Indoor Treadmill Run**: Built-in pedometer step counter sensor tracking.
+- **Activity History**: Cumulative mileage and calorie expenditure statistics.
+
+### 📈 4. Progress & Analytics
+- **Bodyweight Tracking**: Metric weight log in Kilograms (**kg**).
+- **Trend Charts**: Interactive line chart visualizing weight trends over time using `fl_chart`.
+- **Strength Analytics**: Monthly lift progression tracking across compound movements.
+
+### 👤 5. Overview & Profile
+- **Photo Upload**: Interactive avatar with **Camera capture** and **Phone gallery** photo selection via `image_picker`.
+- **Daily Targets**: Customizable calorie targets, weekly workouts, and weight goals.
+- **Cloud Sync Status**: Real-time cloud sync indicator.
+
+---
+
+## 🔒 Authentication & Security
+
+- **Hybrid Authentication Engine**: Full Firebase Authentication integration with Cloud Firestore cloud backup.
+- **Local Fallback Encryption**: Client-side **SHA-256 cryptographic password hashing** via `crypto` and `flutter_secure_storage`.
+- **Session Persistence**: Automatic encrypted token restoration on app launch.
+- **Guest Mode**: Offline guest access for immediate offline usability.
+
+---
+
+## 🛠️ System Architecture & Tech Stack
+
+```
+flutter_app/
+├── lib/
+│   ├── models/           # Data models (Exercise, Meal, RunRecord, UserModel, etc.)
+│   ├── providers/        # State management (AuthProvider, WorkoutProvider, MacroProvider, etc.)
+│   ├── screens/          # UI views (AuthGate, LoginPage, RegisterPage, HomePage, Workouts, etc.)
+│   ├── services/         # Firebase, SecureStorage, OfflineStorage, Connectivity, Biometrics
+│   ├── theme/            # Kinetic Fusion Color Palette, Typography & Theme Tokens
+│   └── widgets/          # Reusable 48px pill buttons, 32px pill inputs, cards
+└── android/              # Native Android configuration, permissions & build scripts
+```
+
+| Technology | Purpose |
+|---|---|
+| **Flutter & Dart** | Cross-platform mobile application framework |
+| **Provider** | Reactive state management |
+| **Firebase Auth & Firestore** | Cloud authentication and database synchronization |
+| **Flutter Secure Storage** | Key-value encrypted storage for cryptographic hashes |
+| **Shared Preferences** | Local offline storage cache |
+| **Image Picker** | Camera and Gallery media access |
+| **FL Chart** | Interactive charting and visualization |
+| **Connectivity Plus** | Network state and online/offline monitoring |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (3.24.0 or newer)
+- [Android Studio](https://developer.android.com/studio) / Android SDK
+- Java JDK 17+
+
+### Installation & Run
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/mohhdmufeed/Fitness-App.git
+   cd Fitness-App/flutter_app
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   flutter pub get
+   ```
+
+3. **Run on connected device / emulator**:
+   ```bash
+   flutter run
+   ```
+
+4. **Build release APK**:
+   ```bash
+   flutter build apk --release
+   ```
+
+---
+
+## 👨‍💻 Author
+
 <div align="center">
 
-Built by <a href="https://github.com/Kennygunderman">Kenny Gunderman</a>
+**Mohd Mufeed**
+
+GitHub: [@mohhdmufeed](https://github.com/mohhdmufeed)  
+Repository: [mohhdmufeed/Fitness-App](https://github.com/mohhdmufeed/Fitness-App)
 
 </div>
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — see the LICENSE file for details.
