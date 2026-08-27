@@ -8,9 +8,9 @@
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-**A high-performance, offline-first mobile fitness and health tracking application built with Flutter, Firebase, and a modern design system.**
+**A high-performance, offline-first mobile fitness and health tracking application built with Flutter, Firebase, and a modern Warm Off-White / Pastel Red design system.**
 
-[Features](#-key-features) • [Screenshots](#-app-screenshots) • [Architecture](#-system-architecture) • [Getting Started](#-getting-started) • [Author](#-author)
+[Screenshots](#-app-screenshots) • [Features](#-key-features) • [Architecture](#-system-architecture) • [Getting Started](#-getting-started) • [Author](#-author)
 
 </div>
 
@@ -22,30 +22,36 @@
   <table>
     <tr>
       <td align="center" width="33%">
-        <b>🔐 Secure Sign-In</b><br/><br/>
-        <img src="assets/screenshots/auth_login.png" width="260" alt="Login Screen" />
+        <b>🔐 Sign In</b><br/><br/>
+        <img src="assets/screenshots/auth_login.png" width="260" alt="Sign In Screen" />
       </td>
       <td align="center" width="33%">
-        <b>📝 Account Registration</b><br/><br/>
-        <img src="assets/screenshots/auth_register.png" width="260" alt="Register Screen" />
+        <b>📝 Create Account</b><br/><br/>
+        <img src="assets/screenshots/auth_register.png" width="260" alt="Create Account Screen" />
       </td>
       <td align="center" width="33%">
-        <b>🍽️ Macros & Nutrition</b><br/><br/>
-        <img src="assets/screenshots/macros_screen.png" width="260" alt="Macros Screen" />
+        <b>🏋️ Train & Workouts</b><br/><br/>
+        <img src="assets/screenshots/workouts_screen.png" width="260" alt="Workouts Screen" />
       </td>
     </tr>
     <tr>
       <td align="center" width="33%">
-        <b>🤖 AI Food Logging</b><br/><br/>
-        <img src="assets/screenshots/ai_logging.png" width="260" alt="AI Log Screen" />
+        <b>🍽️ Macros & Nutrition</b><br/><br/>
+        <img src="assets/screenshots/macros_screen.png" width="260" alt="Macros & Nutrition Screen" />
       </td>
       <td align="center" width="33%">
-        <b>👤 Profile & Targets</b><br/><br/>
-        <img src="assets/screenshots/account_overview.png" width="260" alt="Account Screen" />
+        <b>📈 Progress & Stats</b><br/><br/>
+        <img src="assets/screenshots/progress_screen.png" width="260" alt="Progress & Stats Screen" />
       </td>
       <td align="center" width="33%">
-        <b>🏋️ Workout Tracking</b><br/><br/>
-        <img src="assets/screenshots/macros_screen.png" width="260" alt="Workouts Screen" />
+        <b>⚡ Kinetic Fusion</b><br/><br/>
+        <p align="center">
+          <i>• Off-White (#EEEBE3)<br/>
+          • Pure White Cards<br/>
+          • Pastel Red CTA (#D64848)<br/>
+          • Metric Units (kg)<br/>
+          • Offline-First Engine</i>
+        </p>
       </td>
     </tr>
   </table>
@@ -56,29 +62,29 @@
 ## ✨ Key Features
 
 ### 🏋️ 1. Train & Workout Tracker
-- **Set Logging**: Record exercise sets with weight (**kg**), reps, and completion toggles.
+- **Set Logging**: Record exercise sets with weight in Kilograms (**kg**), reps, and completion checkboxes.
 - **Routines & Templates**: Save and load custom workout splits and exercises.
 - **1RM Strength Estimation**: Automatic Brzycki 1RM progression formulas.
-- **Volume Calculations**: Total accumulated kilograms lifted per workout session.
+- **Volume Calculations**: Total accumulated volume lifted per session.
 
 ### 🍽️ 2. Macros & Nutrition
-- **Visual Calorie Gauge**: Real-time circular progress indicator tracking remaining daily calories.
-- **Macronutrient Split**: Progress bars for Protein, Carbohydrates, and Fats.
+- **Visual Calorie Ring**: Real-time circular progress gauge tracking daily target vs consumed calories.
+- **Macronutrient Split**: Progress breakdown for Protein, Carbohydrates, and Fats.
 - **Meal Organization**: Breakfast, Lunch, Dinner, and Snacks categorization.
 - **AI Food Logger**: Natural language meal estimator powered by offline AI heuristic parsing.
 
 ### 🏃 3. Runs & Cardio Tracking
 - **Outdoor GPS Run**: Real-time route, distance (miles), duration, and pace tracking.
 - **Indoor Treadmill Run**: Built-in pedometer step counter sensor tracking.
-- **Activity History**: Cumulative mileage and calorie expenditure statistics.
+- **Activity History**: Cumulative distance and calorie expenditure analytics.
 
 ### 📈 4. Progress & Analytics
-- **Bodyweight Tracking**: Metric weight log in Kilograms (**kg**).
-- **Trend Charts**: Interactive line chart visualizing weight trends over time using `fl_chart`.
-- **Strength Analytics**: Monthly lift progression tracking across compound movements.
+- **Bodyweight Tracking**: Metric weight tracking in Kilograms (**kg**).
+- **Interactive Graphs**: Smooth curved line chart visualizing weight trends over time using `fl_chart`.
+- **Strength Analytics**: Monthly lift progression tracking across compound movements (Bench Press, Back Squat, Deadlift, Overhead Press).
 
 ### 👤 5. Overview & Profile
-- **Photo Upload**: Interactive avatar with **Camera capture** and **Phone gallery** photo selection via `image_picker`.
+- **Photo Upload**: Profile avatar with **Camera capture** and **Phone gallery** photo selection via `image_picker`.
 - **Daily Targets**: Customizable calorie targets, weekly workouts, and weight goals.
 - **Cloud Sync Status**: Real-time cloud sync indicator.
 
