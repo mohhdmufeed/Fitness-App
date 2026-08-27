@@ -121,18 +121,23 @@ class OfflineStorageService {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_keyProfile);
     if (raw == null || raw.isEmpty) {
-      return UserProfile(id: 'athlete_1');
+      return UserProfile.defaultProfile();
     }
     try {
       return UserProfile.fromJson(jsonDecode(raw) as Map<String, dynamic>);
     } catch (_) {
-      return UserProfile(id: 'athlete_1');
+      return UserProfile.defaultProfile();
     }
   }
+
+  static Future<UserProfile> loadUserProfile() => loadProfile();
 
   static Future<void> saveProfile(UserProfile profile) async {
     final prefs = await SharedPreferences.getInstance();
     final raw = jsonEncode(profile.toJson());
     await prefs.setString(_keyProfile, raw);
   }
+
+  static Future<void> saveUserProfile(UserProfile profile) => saveProfile(profile);
 }
+

@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     setState(() => _isAuthenticating = true);
 
-    final success = await auth.login(email, password);
+    final success = await auth.login(email: email, password: password);
 
     setState(() => _isAuthenticating = false);
 

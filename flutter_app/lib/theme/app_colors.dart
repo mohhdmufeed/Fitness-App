@@ -1,41 +1,46 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Page Background throughout
-  static const Color background = Color(0xFF0A0A0A);
+  // Page Background throughout (Warm Off-White)
+  static const Color background = Color(0xFFEEEBE3);
 
-  // Row / card backgrounds — very subtle separation, no borders or shadows
-  static const Color cardBackground = Color(0xFF141414);
-  static const Color cardSurface = Color(0xFF181818);
-  static const Color cardBorder = Colors.transparent;
+  // Card / Surface Backgrounds (Pure White & Soft Card Surfaces)
+  static const Color cardBackground = Color(0xFFFFFFFF);
+  static const Color cardSurface = Color(0xFFF7F5F0);
+  static const Color cardBorder = Color(0x4DC5CCC9); // 30% Gray-Green border
 
-  // Hairline separators between sections
-  static const Color divider = Color(0xFF232323);
+  // Hairline separators and borders
+  static const Color divider = Color(0x40C5CCC9);
+  static const Color borderSecondary = Color(0xFFC5CCC9);
 
-  // Primary text: warm off-white, not pure white
-  static const Color textPrimary = Color(0xFFF0EFEA);
+  // Typography Tokens
+  static const Color textPrimary = Color(0xFF171E19); // Charcoal
+  static const Color textSecondary = Color(0xB3171E19); // 70% Charcoal
+  static const Color textMuted = Color(0x66171E19); // 40% Charcoal
 
-  // Secondary text: warm mid-gray
-  static const Color textSecondary = Color(0xFF84837C);
+  // Primary Action & Branding (Pastel Muted Red)
+  static const Color primaryCTA = Color(0xFFD64848);
+  static const Color accentRed = Color(0xFFD64848);
 
-  // Tertiary / label text: muted gray, uppercase, letter-spaced
-  static const Color textMuted = Color(0xFF6C6B64);
+  // Success / Active Accents (Soft Sage Green)
+  static const Color accentGreen = Color(0xFF8EB5A2);
+  static const Color accentGreenLight = Color(0xFFA3C7B5);
 
-  // Primary Accent: Sage / Olive Green
-  static const Color accentGreen = Color(0xFFAEBC7E);
-  static const Color accentGreenLight = Color(0xFFB8C489);
+  // Functional Accents
+  static const Color accentTeal = Color(0xFF6DA5A8);
+  static const Color accentCyan = Color(0xFF5B9EAD);
+  static const Color accentPurple = Color(0xFF8B82A8);
+  static const Color accentOrange = Color(0xFFD8854E);
+  static const Color accentYellow = Color(0xFFD4B157);
 
-  // Secondary Accent: Periwinkle / Lavender
-  static const Color accentTeal = Color(0xFF9C9EDE);
-  static const Color accentCyan = Color(0xFFA5A7E2);
-  static const Color accentPurple = Color(0xFF9C9EDE);
+  // Navigation & Buttons
+  static const Color navBar = Color(0xFFFFFFFF);
+  static const Color buttonDisabled = Color(0xFFE2DFD7);
 
-  // Additional status accents
-  static const Color accentOrange = Color(0xFFD4976A);
-  static const Color accentRed = Color(0xFFD46A6A);
-  static const Color accentYellow = Color(0xFFB8C489);
-
-  // Navigation Bar & Overlays
-  static const Color navBar = Color(0xFF0A0A0A);
-  static const Color buttonDisabled = Color(0xFF1E1E1E);
+  // Soft Ambient Box Shadow
+  static const BoxShadow cardShadow = BoxShadow(
+    color: Color(0x0F000000), // rgba(0,0,0,0.06)
+    blurRadius: 30,
+    offset: Offset(0, 15),
+  );
 }

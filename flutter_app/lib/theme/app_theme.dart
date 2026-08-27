@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 class AppTheme {
-  static ThemeData get darkTheme {
+  static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.dark,
+      brightness: Brightness.light,
+      fontFamily: 'Nunito',
       scaffoldBackgroundColor: AppColors.background,
-      primaryColor: AppColors.accentGreen,
-      colorScheme: const ColorScheme.dark(
-        primary: AppColors.accentGreen,
-        secondary: AppColors.accentTeal,
+      primaryColor: AppColors.primaryCTA,
+      colorScheme: const ColorScheme.light(
+        primary: AppColors.primaryCTA,
+        secondary: AppColors.accentGreen,
         surface: AppColors.cardBackground,
         onSurface: AppColors.textPrimary,
+        error: AppColors.accentRed,
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.background,
@@ -20,9 +22,9 @@ class AppTheme {
         centerTitle: false,
         titleTextStyle: TextStyle(
           color: AppColors.textPrimary,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          letterSpacing: -0.3,
+          fontSize: 22,
+          fontWeight: FontWeight.w900,
+          letterSpacing: 0.5,
         ),
         iconTheme: IconThemeData(color: AppColors.textPrimary),
       ),
@@ -31,14 +33,17 @@ class AppTheme {
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-          side: BorderSide.none,
+          borderRadius: BorderRadius.circular(32),
+          side: const BorderSide(color: AppColors.cardBorder, width: 1),
         ),
       ),
       dividerTheme: const DividerThemeData(
         color: AppColors.divider,
         thickness: 1,
         space: 1,
+      ),
+      iconTheme: const IconThemeData(
+        color: AppColors.textPrimary,
       ),
     );
   }

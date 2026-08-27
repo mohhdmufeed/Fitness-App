@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../models/exercise.dart';
 import '../../providers/workout_provider.dart';
 import '../../theme/app_colors.dart';
 import 'add_exercise_screen.dart';
@@ -32,27 +33,10 @@ class WorkoutsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: AppColors.accentGreen.withOpacity(0.15),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.fitness_center_rounded,
-                color: AppColors.accentGreen,
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 10),
-            const Text('TRAIN & WORKOUTS'),
-          ],
-        ),
+        title: const Text('TRAIN & WORKOUTS'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.bookmark_outline_rounded, color: AppColors.accentTeal),
+            icon: const Icon(Icons.bookmark_outline_rounded, color: AppColors.primaryCTA),
             tooltip: 'Routines & Templates',
             onPressed: () {
               Navigator.push(
@@ -70,7 +54,7 @@ class WorkoutsScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: const BoxDecoration(
               color: AppColors.cardBackground,
-              border: Border(bottom: BorderSide(color: AppColors.divider)),
+              border: Border(bottom: BorderSide(color: AppColors.cardBorder)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,8 +71,9 @@ class WorkoutsScreen extends StatelessWidget {
                   DateFormat('EEEE, MMM d').format(workoutProvider.selectedDate),
                   style: const TextStyle(
                     color: AppColors.textPrimary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 14,
+                    letterSpacing: 0.3,
                   ),
                 ),
                 IconButton(
@@ -103,21 +88,15 @@ class WorkoutsScreen extends StatelessWidget {
             ),
           ),
 
-          // Workout Stats Overview
+          // Workout Stats Overview Card (32px Rounded White Surface)
           Container(
             margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.cardBackground,
-                  AppColors.cardSurface,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(16),
+              color: AppColors.cardBackground,
+              borderRadius: BorderRadius.circular(32),
               border: Border.all(color: AppColors.cardBorder),
+              boxShadow: const [AppColors.cardShadow],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -128,7 +107,6 @@ class WorkoutsScreen extends StatelessWidget {
                 _buildDivider(),
                 _buildStatItem('VOLUME', '${totalVolume.toInt()} kg'),
               ],
-
             ),
           ),
 
@@ -136,50 +114,64 @@ class WorkoutsScreen extends StatelessWidget {
           Expanded(
             child: exercises.isEmpty
                 ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.fitness_center_rounded,
-                          size: 54,
-                          color: AppColors.textMuted,
-                        ),
-                        const SizedBox(height: 12),
-                        const Text(
-                          'No exercises in today’s workout',
-                          style: TextStyle(
-                            color: AppColors.textSecondary,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        const Text(
-                          'Tap "+ Add Exercise" or choose a routine',
-                          style: TextStyle(color: AppColors.textMuted, fontSize: 13),
-                        ),
-                        const SizedBox(height: 20),
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.accentGreen,
-                            foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                    child: Padding(
+                      padding: const EdgeInsets.all(32),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: AppColors.cardBackground,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: AppColors.cardBorder),
+                            ),
+                            child: const Icon(
+                              Icons.fitness_center_rounded,
+                              size: 40,
+                              color: AppColors.primaryCTA,
                             ),
                           ),
-                          icon: const Icon(Icons.add),
-                          label: const Text(
-                            'ADD EXERCISE',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'START WORKOUT',
+                            style: TextStyle(
+                              color: AppColors.textPrimary,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 0.5,
+                            ),
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => const AddExerciseScreen()),
-                            );
-                          },
-                        ),
-                      ],
+                          const SizedBox(height: 6),
+                          const Text(
+                            "Choose a routine and let's begin.",
+                            style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryCTA,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(48),
+                              ),
+                            ),
+                            icon: const Icon(Icons.add, size: 18),
+                            label: const Text(
+                              'ADD EXERCISE',
+                              style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 0.5),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => const AddExerciseScreen()),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 : ListView.builder(
@@ -197,7 +189,7 @@ class WorkoutsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
               color: AppColors.cardBackground,
-              border: Border(top: BorderSide(color: AppColors.divider)),
+              border: Border(top: BorderSide(color: AppColors.cardBorder)),
             ),
             child: Row(
               children: [
@@ -205,12 +197,12 @@ class WorkoutsScreen extends StatelessWidget {
                   child: OutlinedButton.icon(
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.textPrimary,
-                      side: const BorderSide(color: AppColors.cardBorder),
+                      side: const BorderSide(color: AppColors.borderSecondary),
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(48)),
                     ),
-                    icon: const Icon(Icons.add_rounded, color: AppColors.accentGreen),
-                    label: const Text('ADD EXERCISE', style: TextStyle(fontWeight: FontWeight.bold)),
+                    icon: const Icon(Icons.add_rounded, color: AppColors.primaryCTA, size: 18),
+                    label: const Text('ADD EXERCISE', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 0.5)),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -225,18 +217,18 @@ class WorkoutsScreen extends StatelessWidget {
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: workout?.isCompleted == true
-                            ? AppColors.accentTeal
-                            : AppColors.accentGreen,
-                        foregroundColor: Colors.black,
+                            ? AppColors.accentGreen
+                            : AppColors.primaryCTA,
+                        foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(48)),
                       ),
                       icon: Icon(workout?.isCompleted == true
                           ? Icons.check_circle_rounded
-                          : Icons.flag_rounded),
+                          : Icons.flag_rounded, size: 18),
                       label: Text(
                         workout?.isCompleted == true ? 'COMPLETED' : 'FINISH WORKOUT',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 12, letterSpacing: 0.5),
                       ),
                       onPressed: () {
                         workoutProvider.finishWorkout();
@@ -259,6 +251,199 @@ class WorkoutsScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildExerciseCard(
+    BuildContext context,
+    WorkoutProvider provider,
+    Exercise exercise,
+    int exIndex,
+  ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(32),
+        border: Border.all(color: AppColors.cardBorder),
+        boxShadow: const [AppColors.cardShadow],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Exercise Header
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        exercise.name,
+                        style: const TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        exercise.bodyPart.name.toUpperCase(),
+                        style: const TextStyle(
+                          color: AppColors.textMuted,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete_outline_rounded, color: AppColors.accentRed, size: 20),
+                  onPressed: () => provider.removeExerciseFromActiveWorkout(exIndex),
+                ),
+              ],
+            ),
+          ),
+          const Divider(height: 1),
+
+          // Sets Table Header
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              children: const [
+                SizedBox(
+                  width: 32,
+                  child: Text('SET', style: TextStyle(color: AppColors.textSecondary, fontSize: 10, fontWeight: FontWeight.bold)),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text('KG', style: TextStyle(color: AppColors.textSecondary, fontSize: 10, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text('REPS', style: TextStyle(color: AppColors.textSecondary, fontSize: 10, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                SizedBox(
+                  width: 44,
+                  child: Center(
+                    child: Text('DONE', style: TextStyle(color: AppColors.textSecondary, fontSize: 10, fontWeight: FontWeight.bold)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Sets List
+          ...exercise.sets.asMap().entries.map((entry) {
+            final setIndex = entry.key;
+            final setLog = entry.value;
+            return _buildSetRow(provider, exIndex, setIndex, setLog);
+          }),
+
+          // Add Set Button
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Center(
+              child: TextButton.icon(
+                style: TextButton.styleFrom(foregroundColor: AppColors.primaryCTA),
+                icon: const Icon(Icons.add, size: 16),
+                label: const Text('+ Add Set', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                onPressed: () => provider.addSetToExercise(exIndex),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSetRow(WorkoutProvider provider, int exIndex, int setIndex, ExerciseSet setLog) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      color: setLog.isCompleted ? AppColors.accentGreen.withValues(alpha: 0.12) : Colors.transparent,
+      child: Row(
+        children: [
+          SizedBox(
+            width: 32,
+            child: Text('${setIndex + 1}', style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w900)),
+          ),
+          Expanded(
+            child: Center(
+              child: Container(
+                width: 70,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: AppColors.background,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.cardBorder),
+                ),
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  style: const TextStyle(color: AppColors.textPrimary, fontSize: 13, fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                    hintText: setLog.weight > 0 ? '${setLog.weight}' : '0',
+                    hintStyle: const TextStyle(color: AppColors.textMuted),
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                  ),
+                  onChanged: (val) {
+                    final w = double.tryParse(val) ?? setLog.weight;
+                    provider.updateSet(exIndex, setIndex, weight: w);
+                  },
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: Container(
+                width: 70,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: AppColors.background,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.cardBorder),
+                ),
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(color: AppColors.textPrimary, fontSize: 13, fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                    hintText: setLog.reps > 0 ? '${setLog.reps}' : '0',
+                    hintStyle: const TextStyle(color: AppColors.textMuted),
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                  ),
+                  onChanged: (val) {
+                    final r = int.tryParse(val) ?? setLog.reps;
+                    provider.updateSet(exIndex, setIndex, reps: r);
+                  },
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 44,
+            child: IconButton(
+              icon: Icon(
+                setLog.isCompleted ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded,
+                color: setLog.isCompleted ? const Color(0xFF43755F) : AppColors.textMuted,
+              ),
+              onPressed: () => provider.updateSet(exIndex, setIndex, isCompleted: !setLog.isCompleted),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildStatItem(String label, String value) {
     return Column(
       children: [
@@ -267,17 +452,17 @@ class WorkoutsScreen extends StatelessWidget {
           style: const TextStyle(
             color: AppColors.textPrimary,
             fontSize: 16,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
           ),
         ),
         const SizedBox(height: 2),
         Text(
           label,
           style: const TextStyle(
-            color: AppColors.textMuted,
-            fontSize: 10,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 0.5,
+            color: AppColors.textSecondary,
+            fontSize: 9,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 0.6,
           ),
         ),
       ],
@@ -285,181 +470,10 @@ class WorkoutsScreen extends StatelessWidget {
   }
 
   Widget _buildDivider() {
-    return Container(height: 24, width: 1, color: AppColors.divider);
-  }
-
-  Widget _buildExerciseCard(
-    BuildContext context,
-    WorkoutProvider provider,
-    dynamic exercise,
-    int exIndex,
-  ) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Exercise Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    exercise.name,
-                    style: const TextStyle(
-                      color: AppColors.textPrimary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.more_horiz, color: AppColors.textMuted),
-                  onPressed: () => provider.removeExerciseFromActiveWorkout(exIndex),
-                  tooltip: 'Remove exercise',
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // Sets Table Header
-            const Row(
-              children: [
-                SizedBox(
-                  width: 40,
-                  child: Text(
-                    'SET',
-                    style: TextStyle(color: AppColors.textMuted, fontSize: 11, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    'KG',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: AppColors.textMuted, fontSize: 11, fontWeight: FontWeight.bold),
-                  ),
-                ),
-
-                Expanded(
-                  child: Text(
-                    'REPS',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: AppColors.textMuted, fontSize: 11, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                SizedBox(
-                  width: 50,
-                  child: Text(
-                    'DONE',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: AppColors.textMuted, fontSize: 11, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-
-            // Sets List
-            ...List.generate(exercise.sets.length, (setIndex) {
-              final set = exercise.sets[setIndex];
-              return Container(
-                margin: const EdgeInsets.symmetric(vertical: 4),
-                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-                decoration: BoxDecoration(
-                  color: set.isCompleted
-                      ? AppColors.accentGreen.withOpacity(0.08)
-                      : AppColors.cardSurface,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: set.isCompleted
-                        ? AppColors.accentGreen.withOpacity(0.3)
-                        : Colors.transparent,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 32,
-                      child: Text(
-                        '${setIndex + 1}',
-                        style: TextStyle(
-                          color: set.isCompleted ? AppColors.accentGreen : AppColors.textSecondary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        initialValue: '${set.weight.toInt()}',
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.symmetric(vertical: 6),
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (val) {
-                          final parsed = double.tryParse(val);
-                          if (parsed != null) {
-                            provider.updateSet(exIndex, setIndex, weight: parsed);
-                          }
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        initialValue: '${set.reps}',
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.symmetric(vertical: 6),
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (val) {
-                          final parsed = int.tryParse(val);
-                          if (parsed != null) {
-                            provider.updateSet(exIndex, setIndex, reps: parsed);
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: 44,
-                      child: IconButton(
-                        icon: Icon(
-                          set.isCompleted ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded,
-                          color: set.isCompleted ? AppColors.accentGreen : AppColors.textMuted,
-                          size: 22,
-                        ),
-                        onPressed: () {
-                          provider.updateSet(exIndex, setIndex, isCompleted: !set.isCompleted);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }),
-
-            const SizedBox(height: 8),
-            // Add Set Button
-            TextButton.icon(
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.accentTeal,
-                padding: EdgeInsets.zero,
-              ),
-              icon: const Icon(Icons.add, size: 18),
-              label: const Text('+ Add Set', style: TextStyle(fontWeight: FontWeight.bold)),
-              onPressed: () => provider.addSetToExercise(exIndex),
-            ),
-          ],
-        ),
-      ),
+    return Container(
+      width: 1,
+      height: 28,
+      color: AppColors.cardBorder,
     );
   }
 }

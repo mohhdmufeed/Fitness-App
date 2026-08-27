@@ -1,24 +1,37 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'providers/macro_provider.dart';
 import 'providers/progress_provider.dart';
 import 'providers/run_provider.dart';
 import 'providers/workout_provider.dart';
-import 'screens/auth/login_screen.dart';
-import 'screens/home_navigation_screen.dart';
+import 'screens/auth_gate.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase with platform-specific options
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    debugPrint('Firebase initialization note: $e');
+  }
+
+  // Configure Android/iOS edge-to-edge transparent system bars with dark icons on off-white background
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: AppColors.navBar,
-      systemNavigationBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+      systemNavigationBarColor: AppColors.cardBackground,
+      systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
 
@@ -44,23 +57,8 @@ class KineticFusionApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kinetic Fusion',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
-      home: Consumer<AuthProvider>(
-        builder: (context, auth, _) {
-          if (auth.isLoading) {
-            return const Scaffold(
-              backgroundColor: AppColors.background,
-              body: Center(
-                child: CircularProgressIndicator(color: AppColors.accentGreen),
-              ),
-            );
-          }
-          if (auth.isAuthenticated) {
-            return const HomeNavigationScreen();
-          }
-          return const LoginScreen();
-        },
-      ),
+      theme: AppTheme.lightTheme,
+      home: const AuthGate(),
     );
   }
 }

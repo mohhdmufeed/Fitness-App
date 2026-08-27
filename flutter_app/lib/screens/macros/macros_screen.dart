@@ -24,16 +24,10 @@ class MacrosScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Row(
-          children: [
-            Icon(Icons.pie_chart_rounded, color: AppColors.accentOrange, size: 20),
-            SizedBox(width: 10),
-            Text('MACROS & NUTRITION'),
-          ],
-        ),
+        title: const Text('MACROS & NUTRITION'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.auto_awesome_rounded, color: AppColors.accentTeal),
+            icon: const Icon(Icons.auto_awesome_rounded, color: AppColors.primaryCTA),
             tooltip: 'Log with AI',
             onPressed: () {
               Navigator.push(
@@ -51,7 +45,7 @@ class MacrosScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: const BoxDecoration(
               color: AppColors.cardBackground,
-              border: Border(bottom: BorderSide(color: AppColors.divider)),
+              border: Border(bottom: BorderSide(color: AppColors.cardBorder)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,8 +62,9 @@ class MacrosScreen extends StatelessWidget {
                   DateFormat('EEEE, MMM d').format(macroProvider.selectedDate),
                   style: const TextStyle(
                     color: AppColors.textPrimary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 14,
+                    letterSpacing: 0.3,
                   ),
                 ),
                 IconButton(
@@ -90,48 +85,75 @@ class MacrosScreen extends StatelessWidget {
               children: [
                 // Calorie Target Card with Visual Circular Gauge
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.cardBackground,
-                        AppColors.cardSurface,
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(20),
+                    color: AppColors.cardBackground,
+                    borderRadius: BorderRadius.circular(32),
                     border: Border.all(color: AppColors.cardBorder),
+                    boxShadow: const [AppColors.cardShadow],
                   ),
-                  child: Row(
+                  child: Column(
                     children: [
-                      // Calorie Circular Indicator
-                      SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            CircularProgressIndicator(
-                              value: calorieProgress,
-                              strokeWidth: 9,
-                              backgroundColor: AppColors.cardBorder,
-                              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.accentOrange),
-                            ),
-                            Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'DAILY CALORIES',
+                                style: TextStyle(
+                                  color: AppColors.textSecondary,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.0,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${currentCalories.toInt()}',
+                                style: const TextStyle(
+                                  color: AppColors.textPrimary,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                              Text(
+                                '/ ${targetCalories.toInt()} kcal target',
+                                style: const TextStyle(
+                                  color: AppColors.textMuted,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SizedBox(
+                                width: 84,
+                                height: 84,
+                                child: CircularProgressIndicator(
+                                  value: calorieProgress,
+                                  strokeWidth: 8,
+                                  backgroundColor: AppColors.background,
+                                  valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primaryCTA),
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    '${currentCalories.toInt()}',
+                                    '${remainingCalories.toInt()}',
                                     style: const TextStyle(
                                       color: AppColors.textPrimary,
-                                      fontSize: 18,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                   const Text(
-                                    'KCAL',
+                                    'left',
                                     style: TextStyle(
                                       color: AppColors.textMuted,
                                       fontSize: 10,
@@ -140,90 +162,44 @@ class MacrosScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 24),
-                      // Target & Remaining Info
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${remainingCalories.toInt()} KCAL LEFT',
-                              style: const TextStyle(
-                                color: AppColors.accentGreen,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Target: ${targetCalories.toInt()} kcal',
-                              style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
-                            ),
-                            const SizedBox(height: 12),
-                            // Quick Log With AI Button
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.accentTeal.withOpacity(0.2),
-                                  foregroundColor: AppColors.accentTeal,
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                ),
-                                icon: const Icon(Icons.auto_awesome_rounded, size: 16),
-                                label: const Text(
-                                  'LOG WITH AI',
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (_) => const LogWithAiScreen()),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
+                      const SizedBox(height: 20),
+                      const Divider(height: 1),
+                      const SizedBox(height: 16),
 
-                // Macros Breakdown Bars
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppColors.cardBackground,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.cardBorder),
-                  ),
-                  child: Column(
-                    children: [
-                      _buildMacroBar(
-                        'PROTEIN',
-                        macroProvider.totalProtein,
-                        user.targetProtein,
-                        AppColors.accentCyan,
-                      ),
-                      const SizedBox(height: 12),
-                      _buildMacroBar(
-                        'CARBS',
-                        macroProvider.totalCarbs,
-                        user.targetCarbs,
-                        AppColors.accentYellow,
-                      ),
-                      const SizedBox(height: 12),
-                      _buildMacroBar(
-                        'FAT',
-                        macroProvider.totalFat,
-                        user.targetFat,
-                        AppColors.accentRed,
+                      // Macronutrient Breakdown Bars
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildMacroBar(
+                              label: 'PROTEIN',
+                              current: macroProvider.totalProtein,
+                              target: user.targetProtein,
+                              color: AppColors.primaryCTA,
+                            ),
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: _buildMacroBar(
+                              label: 'CARBS',
+                              current: macroProvider.totalCarbs,
+                              target: user.targetCarbs,
+                              color: AppColors.accentTeal,
+                            ),
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: _buildMacroBar(
+                              label: 'FAT',
+                              current: macroProvider.totalFat,
+                              target: user.targetFat,
+                              color: AppColors.accentYellow,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -231,24 +207,37 @@ class MacrosScreen extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 // Meal Categories Section
-                const Text(
-                  'MEALS TODAY',
-                  style: TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.0,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'MEAL LOG',
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                    TextButton.icon(
+                      style: TextButton.styleFrom(foregroundColor: AppColors.primaryCTA),
+                      icon: const Icon(Icons.auto_awesome, size: 14),
+                      label: const Text('AI Log', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 11)),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const LogWithAiScreen()),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
 
-                ...MealType.values.map((type) {
-                  final meal = macroProvider.meals.firstWhere(
-                    (m) => m.type == type,
-                    orElse: () => Meal(id: type.name, type: type, name: type.name),
-                  );
-                  return _buildMealCard(context, macroProvider, meal, type);
-                }),
+                _buildMealCategoryCard(context, macroProvider, MealType.breakfast, 'Breakfast'),
+                _buildMealCategoryCard(context, macroProvider, MealType.lunch, 'Lunch'),
+                _buildMealCategoryCard(context, macroProvider, MealType.dinner, 'Dinner'),
+                _buildMealCategoryCard(context, macroProvider, MealType.snacks, 'Snacks'),
               ],
             ),
           ),
@@ -257,138 +246,122 @@ class MacrosScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMacroBar(String name, double current, double target, Color color) {
+  Widget _buildMacroBar({
+    required String label,
+    required double current,
+    required double target,
+    required Color color,
+  }) {
     final progress = target > 0 ? (current / target).clamp(0.0, 1.0) : 0.0;
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              name,
-              style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.bold),
+              label,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 9,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.5,
+              ),
             ),
             Text(
-              '${current.toInt()} / ${target.toInt()}g',
-              style: const TextStyle(color: AppColors.textPrimary, fontSize: 12, fontWeight: FontWeight.bold),
+              '${current.toInt()}g',
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 11,
+                fontWeight: FontWeight.w900,
+              ),
             ),
           ],
         ),
         const SizedBox(height: 6),
-        LinearProgressIndicator(
-          value: progress,
-          backgroundColor: AppColors.cardSurface,
-          valueColor: AlwaysStoppedAnimation<Color>(color),
+        ClipRRect(
           borderRadius: BorderRadius.circular(6),
-          minHeight: 8,
+          child: LinearProgressIndicator(
+            value: progress,
+            minHeight: 6,
+            backgroundColor: AppColors.background,
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+          ),
+        ),
+        const SizedBox(height: 3),
+        Text(
+          '/ ${target.toInt()}g',
+          style: const TextStyle(color: AppColors.textMuted, fontSize: 9, fontWeight: FontWeight.bold),
         ),
       ],
     );
   }
 
-  Widget _buildMealCard(BuildContext context, MacroProvider provider, Meal meal, MealType type) {
-    return Card(
+  Widget _buildMealCategoryCard(
+    BuildContext context,
+    MacroProvider provider,
+    MealType type,
+    String title,
+  ) {
+    final meal = provider.meals.where((m) => m.type == type).firstOrNull;
+    final foods = meal?.items ?? [];
+    final totalCals = foods.fold(0.0, (acc, f) => acc + f.calories);
+
+    return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  meal.name.toUpperCase(),
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      '${meal.totalCalories.toInt()} kcal',
-                      style: const TextStyle(
-                        color: AppColors.accentGreen,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    PopupMenuButton<String>(
-                      icon: const Icon(Icons.add_circle_outline, color: AppColors.accentTeal, size: 20),
-                      color: AppColors.cardBackground,
-                      onSelected: (val) {
-                        if (val == 'ai') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => LogWithAiScreen(initialMealType: type)),
-                          );
-                        } else if (val == 'manual') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => AddFoodScreen(mealType: type)),
-                          );
-                        }
-                      },
-                      itemBuilder: (ctx) => [
-                        const PopupMenuItem(
-                          value: 'ai',
-                          child: Row(
-                            children: [
-                              Icon(Icons.auto_awesome_rounded, color: AppColors.accentTeal, size: 18),
-                              SizedBox(width: 8),
-                              Text('Log with AI (Offline)'),
-                            ],
-                          ),
-                        ),
-                        const PopupMenuItem(
-                          value: 'manual',
-                          child: Row(
-                            children: [
-                              Icon(Icons.edit_rounded, color: AppColors.accentGreen, size: 18),
-                              SizedBox(width: 8),
-                              Text('Manual Food Entry'),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+      decoration: BoxDecoration(
+        color: AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.cardBorder),
+        boxShadow: const [AppColors.cardShadow],
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            title: Text(
+              title,
+              style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w900, fontSize: 14),
             ),
-            if (meal.items.isNotEmpty) ...[
-              const Divider(height: 16),
-              ...meal.items.map(
-                (item) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Row(
+            subtitle: Text(
+              '${totalCals.toInt()} kcal • ${foods.length} items',
+              style: const TextStyle(color: AppColors.textSecondary, fontSize: 11),
+            ),
+            trailing: IconButton(
+              icon: const Icon(Icons.add_circle_outline_rounded, color: AppColors.primaryCTA),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => AddFoodScreen(mealType: type)),
+                );
+              },
+            ),
+          ),
+          if (foods.isNotEmpty) ...[
+            const Divider(height: 1),
+            ...foods.map((food) => ListTile(
+                  dense: true,
+                  title: Text(food.name, style: const TextStyle(color: AppColors.textPrimary, fontSize: 13, fontWeight: FontWeight.w600)),
+                  subtitle: Text(
+                    'P: ${food.protein.toInt()}g  C: ${food.carbs.toInt()}g  F: ${food.fat.toInt()}g',
+                    style: const TextStyle(color: AppColors.textMuted, fontSize: 10),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Expanded(
-                        child: Text(
-                          '${item.name} (${item.quantityText})',
-                          style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
-                        ),
-                      ),
                       Text(
-                        '${item.calories.toInt()} kcal',
-                        style: const TextStyle(color: AppColors.textPrimary, fontSize: 13, fontWeight: FontWeight.w600),
+                        '${food.calories.toInt()} kcal',
+                        style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w900, fontSize: 12),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.close, color: AppColors.textMuted, size: 16),
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        onPressed: () => provider.removeFoodItem(type, item.id),
+                        icon: const Icon(Icons.close_rounded, size: 16, color: AppColors.accentRed),
+                        onPressed: () => provider.removeFoodItem(type, food.id),
                       ),
                     ],
                   ),
-                ),
-              ),
-            ],
+                )),
           ],
-        ),
+        ],
       ),
     );
   }

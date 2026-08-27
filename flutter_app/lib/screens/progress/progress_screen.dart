@@ -16,35 +16,36 @@ class ProgressScreen extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         backgroundColor: AppColors.cardBackground,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(32),
         ),
         title: const Text(
-          'Log Today’s Bodyweight',
-          style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
+          'LOG BODYWEIGHT',
+          style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w900, fontSize: 18),
         ),
         content: TextField(
           controller: controller,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           autofocus: true,
-          style: const TextStyle(color: AppColors.textPrimary),
+          style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold),
           decoration: InputDecoration(
             hintText: 'e.g. 75.5',
             hintStyle: const TextStyle(color: AppColors.textMuted),
             suffixText: 'kg',
             filled: true,
-            fillColor: AppColors.cardSurface,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            fillColor: AppColors.background,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(24), borderSide: BorderSide.none),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary)),
+            child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.bold)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.accentGreen,
-              foregroundColor: Colors.black,
+              backgroundColor: AppColors.primaryCTA,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(48)),
             ),
             onPressed: () {
               final val = double.tryParse(controller.text.trim());
@@ -53,7 +54,7 @@ class ProgressScreen extends StatelessWidget {
                 Navigator.pop(ctx);
               }
             },
-            child: const Text('Save'),
+            child: const Text('SAVE', style: TextStyle(fontWeight: FontWeight.w900)),
           ),
         ],
       ),
@@ -73,16 +74,10 @@ class ProgressScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Row(
-          children: [
-            Icon(Icons.insights_rounded, color: AppColors.accentTeal, size: 20),
-            SizedBox(width: 10),
-            Text('PROGRESS & STATS'),
-          ],
-        ),
+        title: const Text('PROGRESS & STATS'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add, color: AppColors.accentGreen),
+            icon: const Icon(Icons.add_rounded, color: AppColors.primaryCTA),
             tooltip: 'Log Bodyweight',
             onPressed: () => _showLogWeightDialog(context),
           ),
@@ -93,105 +88,121 @@ class ProgressScreen extends StatelessWidget {
         children: [
           // Weight Goal Overview Card
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: AppColors.cardBackground,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'CURRENT WEIGHT',
-                      style: TextStyle(color: AppColors.textMuted, fontSize: 11, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${latestWeight.toStringAsFixed(1)} kg',
-                      style: const TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const Text(
-                      'TARGET GOAL',
-                      style: TextStyle(color: AppColors.textMuted, fontSize: 11, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${targetWeight.toStringAsFixed(1)} kg',
-                      style: const TextStyle(
-                        color: AppColors.accentTeal,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      diff > 0 ? '${diff.toStringAsFixed(1)} kg to go' : 'Goal Achieved! 🔥',
-                      style: TextStyle(
-                        color: diff > 0 ? AppColors.accentOrange : AppColors.accentGreen,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          // Interactive Weight Progression Chart
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.cardBackground,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(32),
+              border: Border.all(color: AppColors.cardBorder),
+              boxShadow: const [AppColors.cardShadow],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'CURRENT WEIGHT',
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              latestWeight.toStringAsFixed(1),
+                              style: const TextStyle(
+                                color: AppColors.textPrimary,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Text(
+                              'kg',
+                              style: TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Text(
+                          'TARGET WEIGHT',
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '${targetWeight.toStringAsFixed(1)} kg',
+                          style: const TextStyle(
+                            color: AppColors.primaryCTA,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        Text(
+                          diff > 0
+                              ? '${diff.toStringAsFixed(1)} kg to lose'
+                              : '${diff.abs().toStringAsFixed(1)} kg to gain',
+                          style: TextStyle(
+                            color: diff <= 0 ? AppColors.accentGreen : AppColors.textMuted,
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                const Divider(height: 1),
+                const SizedBox(height: 16),
+
+                // Weight Progress Chart
                 const Text(
-                  'BODYWEIGHT TREND (KG)',
+                  'WEIGHT PROGRESS (KG)',
                   style: TextStyle(
                     color: AppColors.textSecondary,
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w800,
                     letterSpacing: 1.0,
                   ),
                 ),
                 const SizedBox(height: 16),
                 SizedBox(
-                  height: 180,
-                  child: entries.isEmpty
-                      ? const Center(child: Text('Log weight to see your trend'))
+                  height: 160,
+                  child: entries.length < 2
+                      ? const Center(
+                          child: Text(
+                            'Log more weight entries to view progress graph.',
+                            style: TextStyle(color: AppColors.textMuted, fontSize: 12),
+                          ),
+                        )
                       : LineChart(
                           LineChartData(
                             gridData: const FlGridData(show: false),
-                            titlesData: const FlTitlesData(
-                              leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                              rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                              bottomTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true,
-                                  reservedSize: 22,
-                                  interval: 1,
-                                ),
-                              ),
-                            ),
+                            titlesData: const FlTitlesData(show: false),
                             borderData: FlBorderData(show: false),
-                            minY: (entries.map((e) => e.weight).reduce((a, b) => a < b ? a : b) - 3),
-                            maxY: (entries.map((e) => e.weight).reduce((a, b) => a > b ? a : b) + 3),
                             lineBarsData: [
                               LineChartBarData(
                                 spots: entries
@@ -200,13 +211,12 @@ class ProgressScreen extends StatelessWidget {
                                     .map((e) => FlSpot(e.key.toDouble(), e.value.weight))
                                     .toList(),
                                 isCurved: true,
-                                color: AppColors.accentGreen,
+                                color: AppColors.primaryCTA,
                                 barWidth: 3,
-                                isStrokeCapRound: true,
                                 dotData: const FlDotData(show: true),
                                 belowBarData: BarAreaData(
                                   show: true,
-                                  color: AppColors.accentGreen.withValues(alpha: 0.15),
+                                  color: AppColors.primaryCTA.withValues(alpha: 0.1),
                                 ),
                               ),
                             ],
@@ -218,41 +228,35 @@ class ProgressScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // 1-Rep Max Calculator Card
+          // Strength 1RM Analytics Card
           Container(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: AppColors.cardBackground,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(32),
+              border: Border.all(color: AppColors.cardBorder),
+              boxShadow: const [AppColors.cardShadow],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
-                  children: [
-                    Icon(Icons.calculate_rounded, color: AppColors.accentGreen, size: 20),
-                    SizedBox(width: 8),
-                    Text(
-                      'ESTIMATED 1-REP MAX (1RM)',
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
                 const Text(
-                  'Based on your best logged working sets (Brzycki formula):',
-                  style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                  'ESTIMATED 1RM STRENGTH (KG)',
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1.0,
+                  ),
                 ),
-                const SizedBox(height: 12),
-                _buildPrRow('Barbell Bench Press', '100 kg × 6', '118 kg (1RM)'),
-                _buildPrRow('Barbell Back Squat', '140 kg × 5', '160 kg (1RM)'),
-                _buildPrRow('Barbell Deadlift', '165 kg × 4', '183 kg (1RM)'),
-                _buildPrRow('Overhead Press', '60 kg × 8', '75 kg (1RM)'),
+                const SizedBox(height: 16),
+                _buildStrengthRow('Bench Press', '92.5 kg', '+2.5 kg this month'),
+                const Divider(height: 16),
+                _buildStrengthRow('Back Squat', '125.0 kg', '+5.0 kg this month'),
+                const Divider(height: 16),
+                _buildStrengthRow('Deadlift', '150.0 kg', '+7.5 kg this month'),
+                const Divider(height: 16),
+                _buildStrengthRow('Overhead Press', '60.0 kg', '+1.0 kg this month'),
               ],
             ),
           ),
@@ -261,29 +265,22 @@ class ProgressScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPrRow(String exercise, String workingSet, String estimated1Rm) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(
-              exercise,
-              style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600, fontSize: 13),
-            ),
-          ),
-          Text(
-            workingSet,
-            style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
-          ),
-          const SizedBox(width: 12),
-          Text(
-            estimated1Rm,
-            style: const TextStyle(color: AppColors.accentGreen, fontWeight: FontWeight.bold, fontSize: 13),
-          ),
-        ],
-      ),
+  Widget _buildStrengthRow(String lift, String weight, String change) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(lift, style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 14)),
+            Text(change, style: const TextStyle(color: Color(0xFF528770), fontSize: 11, fontWeight: FontWeight.w700)),
+          ],
+        ),
+        Text(
+          weight,
+          style: const TextStyle(color: AppColors.primaryCTA, fontWeight: FontWeight.w900, fontSize: 16),
+        ),
+      ],
     );
   }
 }
