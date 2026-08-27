@@ -57,6 +57,50 @@ class UserProfile {
     this.isGuest = true,
   });
 
+  factory UserProfile.defaultProfile() => UserProfile(
+        id: 'default_athlete',
+        name: 'Athlete',
+        email: 'athlete@kineticfusion.com',
+        targetCalories: 2400.0,
+        targetProtein: 180.0,
+        targetCarbs: 250.0,
+        targetFat: 70.0,
+        targetWorkoutsPerWeek: 5,
+        targetDailySteps: 10000,
+        targetWeight: 175.0,
+        weightUnit: WeightUnit.lbs,
+        isGuest: true,
+      );
+
+  UserProfile copyWith({
+    String? id,
+    String? name,
+    String? email,
+    double? targetCalories,
+    double? targetProtein,
+    double? targetCarbs,
+    double? targetFat,
+    int? targetWorkoutsPerWeek,
+    int? targetDailySteps,
+    double? targetWeight,
+    WeightUnit? weightUnit,
+    bool? isGuest,
+  }) =>
+      UserProfile(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        targetCalories: targetCalories ?? this.targetCalories,
+        targetProtein: targetProtein ?? this.targetProtein,
+        targetCarbs: targetCarbs ?? this.targetCarbs,
+        targetFat: targetFat ?? this.targetFat,
+        targetWorkoutsPerWeek: targetWorkoutsPerWeek ?? this.targetWorkoutsPerWeek,
+        targetDailySteps: targetDailySteps ?? this.targetDailySteps,
+        targetWeight: targetWeight ?? this.targetWeight,
+        weightUnit: weightUnit ?? this.weightUnit,
+        isGuest: isGuest ?? this.isGuest,
+      );
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,

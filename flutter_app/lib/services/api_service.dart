@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 import '../models/meal.dart';
 import '../models/workout.dart';
+
 
 class ApiService {
   static const String baseUrl = 'https://w3fv96liu9.execute-api.us-east-2.amazonaws.com/prod';
@@ -106,7 +108,7 @@ class ApiService {
           }
 
           return FoodItem(
-            id: f['fdcId']?.toString() ?? UniqueKey().toString(),
+            id: f['fdcId']?.toString() ?? const Uuid().v4(),
             name: f['description'] ?? query,
             quantityText: '100g',
             calories: calories,
@@ -114,6 +116,7 @@ class ApiService {
             carbs: carbs,
             fat: fat,
           );
+
         }).toList();
       }
     } catch (_) {
