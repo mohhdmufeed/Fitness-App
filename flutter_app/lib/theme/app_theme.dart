@@ -20,23 +20,25 @@ class AppTheme {
         centerTitle: false,
         titleTextStyle: TextStyle(
           color: AppColors.textPrimary,
-          fontSize: 22,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
-          letterSpacing: -0.5,
+          letterSpacing: -0.3,
         ),
         iconTheme: IconThemeData(color: AppColors.textPrimary),
       ),
       cardTheme: CardThemeData(
         color: AppColors.cardBackground,
         elevation: 0,
+        margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.cardBorder, width: 1),
+          borderRadius: BorderRadius.circular(14),
+          side: BorderSide.none,
         ),
       ),
       dividerTheme: const DividerThemeData(
         color: AppColors.divider,
         thickness: 1,
+        space: 1,
       ),
     );
   }

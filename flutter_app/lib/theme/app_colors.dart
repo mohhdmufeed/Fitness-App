@@ -1,27 +1,41 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color background = Color(0xFF0C1310);
-  static const Color cardBackground = Color(0xFF131E18);
-  static const Color cardSurface = Color(0xFF182620);
-  static const Color cardBorder = Color(0xFF22352C);
+  // Page Background throughout
+  static const Color background = Color(0xFF0A0A0A);
 
-  // Neon Brand Accents
-  static const Color accentGreen = Color(0xFF00E676);
-  static const Color accentTeal = Color(0xFF00E5FF);
-  static const Color accentCyan = Color(0xFF06B6D4);
-  static const Color accentOrange = Color(0xFFFF9100);
-  static const Color accentPurple = Color(0xFFB388FF);
-  static const Color accentRed = Color(0xFFFF5252);
-  static const Color accentYellow = Color(0xFFFFD600);
+  // Row / card backgrounds — very subtle separation, no borders or shadows
+  static const Color cardBackground = Color(0xFF141414);
+  static const Color cardSurface = Color(0xFF181818);
+  static const Color cardBorder = Colors.transparent;
 
-  // Text Colors
-  static const Color textPrimary = Color(0xFFFFFFFF);
-  static const Color textSecondary = Color(0xFF9E9E9E);
-  static const Color textMuted = Color(0xFF667C72);
+  // Hairline separators between sections
+  static const Color divider = Color(0xFF232323);
 
-  // Nav & Overlays
-  static const Color navBar = Color(0xFF0A100D);
-  static const Color divider = Color(0xFF1F3027);
-  static const Color buttonDisabled = Color(0xFF25372E);
+  // Primary text: warm off-white, not pure white
+  static const Color textPrimary = Color(0xFFF0EFEA);
+
+  // Secondary text: warm mid-gray
+  static const Color textSecondary = Color(0xFF84837C);
+
+  // Tertiary / label text: muted gray, uppercase, letter-spaced
+  static const Color textMuted = Color(0xFF6C6B64);
+
+  // Primary Accent: Sage / Olive Green
+  static const Color accentGreen = Color(0xFFAEBC7E);
+  static const Color accentGreenLight = Color(0xFFB8C489);
+
+  // Secondary Accent: Periwinkle / Lavender
+  static const Color accentTeal = Color(0xFF9C9EDE);
+  static const Color accentCyan = Color(0xFFA5A7E2);
+  static const Color accentPurple = Color(0xFF9C9EDE);
+
+  // Additional status accents
+  static const Color accentOrange = Color(0xFFD4976A);
+  static const Color accentRed = Color(0xFFD46A6A);
+  static const Color accentYellow = Color(0xFFB8C489);
+
+  // Navigation Bar & Overlays
+  static const Color navBar = Color(0xFF0A0A0A);
+  static const Color buttonDisabled = Color(0xFF1E1E1E);
 }
