@@ -25,7 +25,6 @@ class _AccountScreenState extends State<AccountScreen> {
         backgroundColor: AppColors.cardBackground,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.cardBorder),
         ),
         title: const Text(
           'Daily Nutrition Targets',
@@ -111,31 +110,20 @@ class _AccountScreenState extends State<AccountScreen> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.cardBackground, AppColors.cardSurface],
-              ),
+              color: AppColors.cardBackground,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.cardBorder),
             ),
             child: Row(
               children: [
                 Container(
                   width: 60,
                   height: 60,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    gradient: const LinearGradient(
-                      colors: [AppColors.accentGreen, AppColors.accentTeal],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.accentGreen.withOpacity(0.3),
-                        blurRadius: 16,
-                      ),
-                    ],
+                    color: AppColors.cardSurface,
                   ),
                   child: const Center(
-                    child: Icon(Icons.person_rounded, color: Colors.black, size: 36),
+                    child: Icon(Icons.person_rounded, color: AppColors.accentGreen, size: 36),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -160,7 +148,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
-                          color: AppColors.accentGreen.withOpacity(0.15),
+                          color: AppColors.accentGreen.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Text(
@@ -185,7 +173,7 @@ class _AccountScreenState extends State<AccountScreen> {
             'NUTRITION & FITNESS TARGETS',
             style: TextStyle(
               color: AppColors.textSecondary,
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.0,
             ),
@@ -237,64 +225,13 @@ class _AccountScreenState extends State<AccountScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 20),
-
-          // App Settings & Preferences
-          const Text(
-            'PREFERENCES & SYSTEM',
-            style: TextStyle(
-              color: AppColors.textSecondary,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.0,
-            ),
-          ),
-          const SizedBox(height: 8),
-
-          Card(
-            child: Column(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.scale_rounded, color: AppColors.accentTeal),
-                  title: const Text('Weight Units', style: TextStyle(fontWeight: FontWeight.bold)),
-                  trailing: DropdownButton<WeightUnit>(
-                    value: user.weightUnit,
-                    dropdownColor: AppColors.cardBackground,
-                    underline: const SizedBox(),
-                    items: const [
-                      DropdownMenuItem(value: WeightUnit.lbs, child: Text('Pounds (lbs)')),
-                      DropdownMenuItem(value: WeightUnit.kg, child: Text('Kilograms (kg)')),
-                    ],
-                    onChanged: (unit) {
-                      if (unit != null) {
-                        auth.updateProfile(weightUnit: unit);
-                      }
-                    },
-                  ),
-                ),
-                const Divider(height: 1),
-                const ListTile(
-                  leading: Icon(Icons.memory_rounded, color: AppColors.accentGreen),
-                  title: Text('On-Device AI Engine', style: TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text('Local Natural Language Nutrition Estimator', style: TextStyle(fontSize: 12)),
-                  trailing: Icon(Icons.check_circle_rounded, color: AppColors.accentGreen, size: 20),
-                ),
-                const Divider(height: 1),
-                const ListTile(
-                  leading: Icon(Icons.info_outline_rounded, color: AppColors.textMuted),
-                  title: Text('Version', style: TextStyle(fontWeight: FontWeight.bold)),
-                  trailing: Text('Kinetic Fusion v3.0 (Flutter Native)', style: TextStyle(color: AppColors.textMuted, fontSize: 12)),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
 
           // Switch / Sign Out Button
           OutlinedButton.icon(
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.accentRed,
-              side: BorderSide(color: AppColors.accentRed.withOpacity(0.5)),
+              side: const BorderSide(color: AppColors.divider),
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),

@@ -1,4 +1,4 @@
-enum WeightUnit { lbs, kg }
+enum WeightUnit { kg, lbs }
 
 class WeightEntry {
   final String id;
@@ -52,8 +52,8 @@ class UserProfile {
     this.targetFat = 70.0,
     this.targetWorkoutsPerWeek = 5,
     this.targetDailySteps = 10000,
-    this.targetWeight = 175.0,
-    this.weightUnit = WeightUnit.lbs,
+    this.targetWeight = 75.0,
+    this.weightUnit = WeightUnit.kg,
     this.isGuest = true,
   });
 
@@ -67,8 +67,8 @@ class UserProfile {
         targetFat: 70.0,
         targetWorkoutsPerWeek: 5,
         targetDailySteps: 10000,
-        targetWeight: 175.0,
-        weightUnit: WeightUnit.lbs,
+        targetWeight: 75.0,
+        weightUnit: WeightUnit.kg,
         isGuest: true,
       );
 
@@ -126,7 +126,7 @@ class UserProfile {
         targetFat: (json['targetFat'] as num?)?.toDouble() ?? 70.0,
         targetWorkoutsPerWeek: json['targetWorkoutsPerWeek'] as int? ?? 5,
         targetDailySteps: json['targetDailySteps'] as int? ?? 10000,
-        targetWeight: (json['targetWeight'] as num?)?.toDouble() ?? 175.0,
+        targetWeight: (json['targetWeight'] as num?)?.toDouble() ?? 75.0,
         weightUnit: WeightUnit.values[json['weightUnit'] as int? ?? 0],
         isGuest: json['isGuest'] as bool? ?? true,
       );

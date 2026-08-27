@@ -17,7 +17,6 @@ class ProgressScreen extends StatelessWidget {
         backgroundColor: AppColors.cardBackground,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.cardBorder),
         ),
         title: const Text(
           'Log Today’s Bodyweight',
@@ -29,9 +28,9 @@ class ProgressScreen extends StatelessWidget {
           autofocus: true,
           style: const TextStyle(color: AppColors.textPrimary),
           decoration: InputDecoration(
-            hintText: 'e.g. 178.5',
+            hintText: 'e.g. 75.5',
             hintStyle: const TextStyle(color: AppColors.textMuted),
-            suffixText: 'lbs',
+            suffixText: 'kg',
             filled: true,
             fillColor: AppColors.cardSurface,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -67,8 +66,8 @@ class ProgressScreen extends StatelessWidget {
     final user = context.watch<AuthProvider>().user;
     final entries = progress.weightEntries;
 
-    final latestWeight = progress.latestWeight ?? 178.0;
-    final targetWeight = user.targetWeight ?? 175.0;
+    final latestWeight = progress.latestWeight ?? 75.0;
+    final targetWeight = user.targetWeight ?? 72.0;
     final diff = latestWeight - targetWeight;
 
     return Scaffold(
@@ -76,7 +75,7 @@ class ProgressScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Row(
           children: [
-            Icon(Icons.insights_rounded, color: AppColors.accentCyan, size: 20),
+            Icon(Icons.insights_rounded, color: AppColors.accentTeal, size: 20),
             SizedBox(width: 10),
             Text('PROGRESS & STATS'),
           ],
@@ -96,11 +95,8 @@ class ProgressScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.cardBackground, AppColors.cardSurface],
-              ),
+              color: AppColors.cardBackground,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.cardBorder),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,7 +110,7 @@ class ProgressScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${latestWeight.toStringAsFixed(1)} lbs',
+                      '${latestWeight.toStringAsFixed(1)} kg',
                       style: const TextStyle(
                         color: AppColors.textPrimary,
                         fontSize: 28,
@@ -132,7 +128,7 @@ class ProgressScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${targetWeight.toStringAsFixed(1)} lbs',
+                      '${targetWeight.toStringAsFixed(1)} kg',
                       style: const TextStyle(
                         color: AppColors.accentTeal,
                         fontSize: 22,
@@ -140,7 +136,7 @@ class ProgressScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      diff > 0 ? '${diff.toStringAsFixed(1)} lbs to go' : 'Goal Achieved! 🔥',
+                      diff > 0 ? '${diff.toStringAsFixed(1)} kg to go' : 'Goal Achieved! 🔥',
                       style: TextStyle(
                         color: diff > 0 ? AppColors.accentOrange : AppColors.accentGreen,
                         fontSize: 11,
@@ -160,16 +156,15 @@ class ProgressScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.cardBackground,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.cardBorder),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'BODYWEIGHT TREND (LBS)',
+                  'BODYWEIGHT TREND (KG)',
                   style: TextStyle(
                     color: AppColors.textSecondary,
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.0,
                   ),
@@ -195,8 +190,8 @@ class ProgressScreen extends StatelessWidget {
                               ),
                             ),
                             borderData: FlBorderData(show: false),
-                            minY: (entries.map((e) => e.weight).reduce((a, b) => a < b ? a : b) - 5),
-                            maxY: (entries.map((e) => e.weight).reduce((a, b) => a > b ? a : b) + 5),
+                            minY: (entries.map((e) => e.weight).reduce((a, b) => a < b ? a : b) - 3),
+                            maxY: (entries.map((e) => e.weight).reduce((a, b) => a > b ? a : b) + 3),
                             lineBarsData: [
                               LineChartBarData(
                                 spots: entries
@@ -211,7 +206,7 @@ class ProgressScreen extends StatelessWidget {
                                 dotData: const FlDotData(show: true),
                                 belowBarData: BarAreaData(
                                   show: true,
-                                  color: AppColors.accentGreen.withOpacity(0.15),
+                                  color: AppColors.accentGreen.withValues(alpha: 0.15),
                                 ),
                               ),
                             ],
@@ -229,7 +224,6 @@ class ProgressScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.cardBackground,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.cardBorder),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,10 +249,10 @@ class ProgressScreen extends StatelessWidget {
                   style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
                 ),
                 const SizedBox(height: 12),
-                _buildPrRow('Barbell Bench Press', '225 lbs × 6', '264 lbs (1RM)'),
-                _buildPrRow('Barbell Back Squat', '315 lbs × 5', '360 lbs (1RM)'),
-                _buildPrRow('Barbell Deadlift', '365 lbs × 4', '405 lbs (1RM)'),
-                _buildPrRow('Overhead Press', '135 lbs × 8', '168 lbs (1RM)'),
+                _buildPrRow('Barbell Bench Press', '100 kg × 6', '118 kg (1RM)'),
+                _buildPrRow('Barbell Back Squat', '140 kg × 5', '160 kg (1RM)'),
+                _buildPrRow('Barbell Deadlift', '165 kg × 4', '183 kg (1RM)'),
+                _buildPrRow('Overhead Press', '60 kg × 8', '75 kg (1RM)'),
               ],
             ),
           ),

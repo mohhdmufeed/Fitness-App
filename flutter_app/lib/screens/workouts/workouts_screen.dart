@@ -126,8 +126,9 @@ class WorkoutsScreen extends StatelessWidget {
                 _buildDivider(),
                 _buildStatItem('SETS LOGGED', '$completedSets / $totalSets'),
                 _buildDivider(),
-                _buildStatItem('VOLUME', '${totalVolume.toInt()} lbs'),
+                _buildStatItem('VOLUME', '${totalVolume.toInt()} kg'),
               ],
+
             ),
           ),
 
@@ -335,11 +336,12 @@ class WorkoutsScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    'LBS',
+                    'KG',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: AppColors.textMuted, fontSize: 11, fontWeight: FontWeight.bold),
                   ),
                 ),
+
                 Expanded(
                   child: Text(
                     'REPS',
