@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
+import '../../services/secure_auth_service.dart';
 import '../../theme/app_colors.dart';
 import '../home_navigation_screen.dart';
 
@@ -15,6 +16,20 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isAuthenticating = false;
+  bool _canUseBiometrics = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkBiometricsAvailability();
+  }
+
+  Future<void> _checkBiometricsAvailability() async {
+    final available = await SecureAuthService.canCheckBiometrics();
+    if (mounted) {
+      setState(() => _canUseBiometrics = available);
+    }
+  }
 
   void _proceedToHome() {
     Navigator.of(context).pushReplacement(
@@ -117,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     width: 72,
                     height: 72,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppColors.cardBackground,
                     ),
@@ -225,22 +240,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 12),
 
-                // Biometric Fingerprint Button
-                OutlinedButton.icon(
-                  onPressed: () => _handleBiometrics(auth),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.textPrimary,
-                    side: const BorderSide(color: AppColors.divider),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                // Optional Biometric Fingerprint Button (Visible if device supports it)
+                if (_canUseBiometrics) ...[
+                  OutlinedButton.icon(
+                    onPressed: () => _handleBiometrics(auth),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.textPrimary,
+                      side: const BorderSide(color: AppColors.divider),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    ),
+                    icon: const Icon(Icons.fingerprint_rounded, color: AppColors.accentTeal, size: 22),
+                    label: const Text(
+                      'UNLOCK WITH BIOMETRICS',
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  icon: const Icon(Icons.fingerprint_rounded, color: AppColors.accentTeal, size: 22),
-                  label: const Text(
-                    'UNLOCK WITH BIOMETRICS',
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 12),
+                  const SizedBox(height: 12),
+                ],
 
                 // Continue Offline (Guest)
                 TextButton.icon(

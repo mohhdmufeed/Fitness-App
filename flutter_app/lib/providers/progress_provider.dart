@@ -26,25 +26,25 @@ class ProgressProvider extends ChangeNotifier {
 
     _weightEntries = await OfflineStorageService.loadWeightEntries();
     if (_weightEntries.isEmpty) {
-      // Seed default entry for realistic visual chart
+      // Seed default entries in Kilograms (KG)
       final now = DateTime.now();
       _weightEntries = [
         WeightEntry(
           id: _uuid.v4(),
           dateIso: DateFormat('yyyy-MM-dd')
               .format(now.subtract(const Duration(days: 14))),
-          weight: 182.5,
+          weight: 78.2,
         ),
         WeightEntry(
           id: _uuid.v4(),
           dateIso: DateFormat('yyyy-MM-dd')
               .format(now.subtract(const Duration(days: 7))),
-          weight: 180.2,
+          weight: 76.5,
         ),
         WeightEntry(
           id: _uuid.v4(),
           dateIso: DateFormat('yyyy-MM-dd').format(now),
-          weight: 178.6,
+          weight: 75.0,
         ),
       ];
       await OfflineStorageService.saveWeightEntries(_weightEntries);

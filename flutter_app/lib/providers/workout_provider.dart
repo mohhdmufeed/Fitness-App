@@ -70,9 +70,9 @@ class WorkoutProvider extends ChangeNotifier {
     final newExercise = baseExercise.copyWith(
       id: _uuid.v4(),
       sets: [
-        ExerciseSet(id: _uuid.v4(), weight: 135, reps: 10, isCompleted: false),
-        ExerciseSet(id: _uuid.v4(), weight: 135, reps: 10, isCompleted: false),
-        ExerciseSet(id: _uuid.v4(), weight: 135, reps: 10, isCompleted: false),
+        ExerciseSet(id: _uuid.v4(), weight: 60.0, reps: 10, isCompleted: false),
+        ExerciseSet(id: _uuid.v4(), weight: 60.0, reps: 10, isCompleted: false),
+        ExerciseSet(id: _uuid.v4(), weight: 60.0, reps: 10, isCompleted: false),
       ],
     );
 
@@ -96,11 +96,12 @@ class WorkoutProvider extends ChangeNotifier {
     exercise.sets.add(
       ExerciseSet(
         id: _uuid.v4(),
-        weight: lastSet?.weight ?? 135,
+        weight: lastSet?.weight ?? 60.0,
         reps: lastSet?.reps ?? 10,
         isCompleted: false,
       ),
     );
+
 
     await _saveCurrentWorkout();
     notifyListeners();
