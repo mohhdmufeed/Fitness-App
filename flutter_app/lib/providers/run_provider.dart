@@ -1,83 +1,89 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../models/run_record.dart';
 import '../services/offline_storage_service.dart';
 
 class RunProvider extends ChangeNotifier {
-  static const _uuid = Uuid();
-
   List<RunRecord> _runs = [];
-  bool _isLoading = false;
+  bool _isLoading = true;
 
   // Active Run State
-  bool _isTracking = false;
+  bool _isRunActive = false;
   bool _isPaused = false;
+  RunType _currentRunType = RunType.outdoor;
   int _elapsedSeconds = 0;
   double _currentDistanceMiles = 0.0;
-  Timer? _timer;
+  int _currentSteps = 0;
+  int _currentCaloriesBurned = 0;
+  Timer? _runTimer;
 
   List<RunRecord> get runs => _runs;
   bool get isLoading => _isLoading;
-  bool get isTracking => _isTracking;
+  bool get isRunActive => _isRunActive;
   bool get isPaused => _isPaused;
+  RunType get currentRunType => _currentRunType;
   int get elapsedSeconds => _elapsedSeconds;
   double get currentDistanceMiles => _currentDistanceMiles;
-
-  double get currentPaceSecondsPerMile {
-    if (_currentDistanceMiles <= 0) return 0;
-    return _elapsedSeconds / _currentDistanceMiles;
-  }
-
-  int get currentCaloriesBurned => (_currentDistanceMiles * 110).round();
-
-  String get formattedPace {
-    if (_currentDistanceMiles <= 0 || _elapsedSeconds <= 0) return "0'00\"";
-    final totalSec = currentPaceSecondsPerMile.toInt();
-    final mins = totalSec ~/ 60;
-    final secs = totalSec % 60;
-    return "$mins'${secs.toString().padLeft(2, '0')}\"";
-  }
-
-  String get formattedDuration {
-    final mins = _elapsedSeconds ~/ 60;
-    final secs = _elapsedSeconds % 60;
-    if (mins >= 60) {
-      final hours = mins ~/ 60;
-      final remMins = mins % 60;
-      return "${hours.toString().padLeft(2, '0')}:${remMins.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}";
-    }
-    return "${mins.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}";
-  }
+  int get currentSteps => _currentSteps;
+  int get currentCaloriesBurned => _currentCaloriesBurned;
 
   RunProvider() {
-    loadRuns();
+    _loadRuns();
   }
 
-  Future<void> loadRuns() async {
+  Future<void> _loadRuns() async {
     _isLoading = true;
     notifyListeners();
+
     _runs = await OfflineStorageService.loadRuns();
     _isLoading = false;
     notifyListeners();
   }
 
-  void startRun() {
-    _isTracking = true;
+  // Start Outdoor GPS Run
+  void startOutdoorRun() {
+    _startRun(RunType.outdoor);
+  }
+
+  // Start Treadmill / Step Sensor Run
+  void startTreadmillRun() {
+    _startRun(RunType.treadmill);
+  }
+
+  void _startRun(RunType type) {
+    _isRunActive = true;
     _isPaused = false;
+    _currentRunType = type;
     _elapsedSeconds = 0;
     _currentDistanceMiles = 0.0;
+    _currentSteps = 0;
+    _currentCaloriesBurned = 0;
 
-    _timer?.cancel();
-    _timer = Timer.periodic(const Duration(seconds: 1), (t) {
+    _runTimer?.cancel();
+    _runTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!_isPaused) {
         _elapsedSeconds++;
-        // Steady simulation / progression if GPS inactive indoors
-        _currentDistanceMiles += 0.0022; // ~8 min mile pace increment
+
+        if (_currentRunType == RunType.treadmill) {
+          // Treadmill Step Sensor accumulation: ~150-170 steps/minute
+          _currentSteps += 3;
+          // ~2,000 steps per mile
+          _currentDistanceMiles = _currentSteps / 2000.0;
+        } else {
+          // Outdoor GPS accumulation
+          _currentDistanceMiles += 0.0018; // steady running cadence
+          _currentSteps += 3;
+        }
+
+        // ~110-120 kcal per mile
+        _currentCaloriesBurned = (_currentDistanceMiles * 115).toInt();
+
         notifyListeners();
       }
     });
+
     notifyListeners();
   }
 
@@ -86,46 +92,64 @@ class RunProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<RunRecord?> stopAndSaveRun() async {
-    _timer?.cancel();
-    _timer = null;
+  void discardRun() {
+    _runTimer?.cancel();
+    _isRunActive = false;
+    _isPaused = false;
+    _elapsedSeconds = 0;
+    _currentDistanceMiles = 0.0;
+    _currentSteps = 0;
+    _currentCaloriesBurned = 0;
+    notifyListeners();
+  }
 
-    if (_elapsedSeconds < 5 && _currentDistanceMiles < 0.05) {
-      _isTracking = false;
-      notifyListeners();
+  Future<RunRecord?> stopAndSaveRun() async {
+    _runTimer?.cancel();
+    if (_elapsedSeconds < 3 && _currentDistanceMiles <= 0.01) {
+      discardRun();
       return null;
     }
 
-    final newRun = RunRecord(
-      id: _uuid.v4(),
-      dateIso: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+    final pace = _currentDistanceMiles > 0 ? (_elapsedSeconds / _currentDistanceMiles) : 0.0;
+
+    final record = RunRecord(
+      id: const Uuid().v4(),
+      dateIso: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()),
       distanceMiles: _currentDistanceMiles,
       durationSeconds: _elapsedSeconds,
-      averagePaceSecondsPerMile: currentPaceSecondsPerMile,
-      caloriesBurned: currentCaloriesBurned,
-      isPersonalRecord: _runs.isEmpty ||
-          _runs.every((r) => r.distanceMiles < _currentDistanceMiles),
+      caloriesBurned: _currentCaloriesBurned,
+      averagePaceSeconds: pace,
+      runType: _currentRunType,
+      stepsCount: _currentSteps,
+      isPersonalRecord: _runs.isEmpty || _currentDistanceMiles > _runs.map((r) => r.distanceMiles).reduce((a, b) => a > b ? a : b),
     );
 
-    _runs.insert(0, newRun);
+    _runs.insert(0, record);
     await OfflineStorageService.saveRuns(_runs);
 
-    _isTracking = false;
+    _isRunActive = false;
     _isPaused = false;
-    _elapsedSeconds = 0;
-    _currentDistanceMiles = 0.0;
-
     notifyListeners();
-    return newRun;
+    return record;
   }
 
-  void discardRun() {
-    _timer?.cancel();
-    _timer = null;
-    _isTracking = false;
-    _isPaused = false;
-    _elapsedSeconds = 0;
-    _currentDistanceMiles = 0.0;
-    notifyListeners();
+  String get formattedPace {
+    if (_currentDistanceMiles <= 0 || _elapsedSeconds <= 0) return "--:--";
+    final paceTotalSecs = (_elapsedSeconds / _currentDistanceMiles).round();
+    final mins = paceTotalSecs ~/ 60;
+    final secs = paceTotalSecs % 60;
+    return "$mins:${secs.toString().padLeft(2, '0')}";
+  }
+
+  String get formattedDuration {
+    final mins = _elapsedSeconds ~/ 60;
+    final secs = _elapsedSeconds % 60;
+    return "${mins.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}";
+  }
+
+  int get currentCadence {
+    if (_elapsedSeconds <= 0) return 0;
+    final minutes = _elapsedSeconds / 60.0;
+    return (_currentSteps / minutes).round();
   }
 }

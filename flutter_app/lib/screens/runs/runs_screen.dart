@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../models/run_record.dart';
 import '../../providers/run_provider.dart';
 import '../../theme/app_colors.dart';
 import 'active_run_screen.dart';
@@ -21,7 +22,7 @@ class RunsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Row(
           children: [
-            Icon(Icons.directions_run_rounded, color: AppColors.accentTeal, size: 22),
+            Icon(Icons.directions_run_rounded, color: AppColors.accentGreen, size: 22),
             SizedBox(width: 10),
             Text('RUNS & CARDIO'),
           ],
@@ -34,11 +35,8 @@ class RunsScreen extends StatelessWidget {
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.cardBackground, AppColors.cardSurface],
-              ),
+              color: AppColors.cardBackground,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.cardBorder),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -52,29 +50,69 @@ class RunsScreen extends StatelessWidget {
             ),
           ),
 
-          // Start Run Big Action Card
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.accentGreen,
-                foregroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                elevation: 0,
-              ),
-              icon: const Icon(Icons.play_arrow_rounded, size: 26),
-              label: const Text(
-                'START OUTDOOR / TREADMILL RUN',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, letterSpacing: 0.5),
-              ),
-              onPressed: () {
-                runProvider.startRun();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const ActiveRunScreen()),
-                );
-              },
+          // Dual Launch Cards: Outdoor (GPS) & Treadmill (Step Sensor)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                // Outdoor Run (GPS)
+                Expanded(
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.accentGreen,
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      elevation: 0,
+                    ),
+                    icon: const Icon(Icons.location_on_rounded, size: 20),
+                    label: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('OUTDOOR', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13)),
+                        Text('GPS Tracked', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600)),
+                      ],
+                    ),
+                    onPressed: () {
+                      runProvider.startOutdoorRun();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ActiveRunScreen()),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+                // Treadmill Run (Step Sensor)
+                Expanded(
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.cardBackground,
+                      foregroundColor: AppColors.textPrimary,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      elevation: 0,
+                    ),
+                    icon: const Icon(Icons.directions_walk_rounded, color: AppColors.accentTeal, size: 20),
+                    label: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('TREADMILL', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13)),
+                        Text('Step Sensor', style: TextStyle(color: AppColors.accentTeal, fontSize: 10, fontWeight: FontWeight.w600)),
+                      ],
+                    ),
+                    onPressed: () {
+                      runProvider.startTreadmillRun();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ActiveRunScreen()),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 20),
@@ -88,7 +126,7 @@ class RunsScreen extends StatelessWidget {
                 'RECENT ACTIVITIES',
                 style: TextStyle(
                   color: AppColors.textSecondary,
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.0,
                 ),
@@ -112,7 +150,7 @@ class RunsScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'Tap "START OUTDOOR / TREADMILL RUN" above',
+                          'Select "OUTDOOR" or "TREADMILL" above',
                           style: TextStyle(color: AppColors.textMuted, fontSize: 12),
                         ),
                       ],
@@ -123,6 +161,8 @@ class RunsScreen extends StatelessWidget {
                     itemCount: runs.length,
                     itemBuilder: (context, index) {
                       final run = runs[index];
+                      final isTreadmill = run.runType == RunType.treadmill;
+
                       return Card(
                         margin: const EdgeInsets.only(bottom: 10),
                         child: Padding(
@@ -132,13 +172,15 @@ class RunsScreen extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
-                                  color: AppColors.accentTeal.withOpacity(0.12),
+                                  color: isTreadmill
+                                      ? AppColors.accentTeal.withValues(alpha: 0.12)
+                                      : AppColors.accentGreen.withValues(alpha: 0.12),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: const Icon(
-                                  Icons.directions_run_rounded,
-                                  color: AppColors.accentTeal,
-                                  size: 24,
+                                child: Icon(
+                                  isTreadmill ? Icons.directions_walk_rounded : Icons.location_on_rounded,
+                                  color: isTreadmill ? AppColors.accentTeal : AppColors.accentGreen,
+                                  size: 22,
                                 ),
                               ),
                               const SizedBox(width: 16),
@@ -152,23 +194,41 @@ class RunsScreen extends StatelessWidget {
                                           '${run.distanceMiles.toStringAsFixed(2)} mi',
                                           style: const TextStyle(
                                             color: AppColors.textPrimary,
-                                            fontSize: 17,
+                                            fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
+                                        const SizedBox(width: 8),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                          decoration: BoxDecoration(
+                                            color: isTreadmill
+                                                ? AppColors.accentTeal.withValues(alpha: 0.2)
+                                                : AppColors.accentGreen.withValues(alpha: 0.2),
+                                            borderRadius: BorderRadius.circular(6),
+                                          ),
+                                          child: Text(
+                                            isTreadmill ? 'TREADMILL' : 'GPS',
+                                            style: TextStyle(
+                                              color: isTreadmill ? AppColors.accentTeal : AppColors.accentGreen,
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w900,
+                                            ),
+                                          ),
+                                        ),
                                         if (run.isPersonalRecord) ...[
-                                          const SizedBox(width: 8),
+                                          const SizedBox(width: 6),
                                           Container(
                                             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                             decoration: BoxDecoration(
-                                              color: AppColors.accentYellow.withOpacity(0.2),
+                                              color: AppColors.accentYellow.withValues(alpha: 0.2),
                                               borderRadius: BorderRadius.circular(6),
                                             ),
                                             child: const Text(
                                               'PR',
                                               style: TextStyle(
                                                 color: AppColors.accentYellow,
-                                                fontSize: 10,
+                                                fontSize: 9,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -178,7 +238,9 @@ class RunsScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      run.dateIso,
+                                      isTreadmill && run.stepsCount > 0
+                                          ? '${run.dateIso} · ${run.stepsCount} steps'
+                                          : run.dateIso,
                                       style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
                                     ),
                                   ],
@@ -191,7 +253,7 @@ class RunsScreen extends StatelessWidget {
                                     run.formattedPace,
                                     style: const TextStyle(
                                       color: AppColors.accentGreen,
-                                      fontSize: 15,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../models/run_record.dart';
 import '../../providers/run_provider.dart';
 import '../../theme/app_colors.dart';
 
@@ -9,6 +10,7 @@ class ActiveRunScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final runProvider = context.watch<RunProvider>();
+    final isTreadmill = runProvider.currentRunType == RunType.treadmill;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -18,32 +20,33 @@ class ActiveRunScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Header
+              // Header Badge & Close Button
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppColors.accentGreen.withOpacity(0.15),
+                      color: isTreadmill
+                          ? AppColors.accentTeal.withValues(alpha: 0.15)
+                          : AppColors.accentGreen.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
                       children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.accentGreen,
-                          ),
+                        Icon(
+                          isTreadmill ? Icons.directions_walk_rounded : Icons.location_on_rounded,
+                          color: isTreadmill ? AppColors.accentTeal : AppColors.accentGreen,
+                          size: 16,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 6),
                         Text(
-                          runProvider.isPaused ? 'PAUSED' : 'LIVE GPS RUN',
-                          style: const TextStyle(
-                            color: AppColors.accentGreen,
-                            fontSize: 12,
+                          runProvider.isPaused
+                              ? 'PAUSED'
+                              : (isTreadmill ? 'TREADMILL (STEP SENSOR)' : 'LIVE GPS OUTDOOR'),
+                          style: TextStyle(
+                            color: isTreadmill ? AppColors.accentTeal : AppColors.accentGreen,
+                            fontSize: 11,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.8,
                           ),
@@ -62,14 +65,14 @@ class ActiveRunScreen extends StatelessWidget {
               ),
               const Spacer(),
 
-              // Distance Hero Display
+              // Primary Hero Display (Distance or Steps)
               Column(
                 children: [
                   Text(
                     runProvider.currentDistanceMiles.toStringAsFixed(2),
                     style: const TextStyle(
                       color: AppColors.textPrimary,
-                      fontSize: 72,
+                      fontSize: 68,
                       fontWeight: FontWeight.w900,
                       letterSpacing: -2,
                     ),
@@ -78,27 +81,47 @@ class ActiveRunScreen extends StatelessWidget {
                     'MILES',
                     style: TextStyle(
                       color: AppColors.textSecondary,
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 2,
                     ),
                   ),
+                  if (isTreadmill) ...[
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: AppColors.cardBackground,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '👣 ${runProvider.currentSteps} STEPS',
+                        style: const TextStyle(
+                          color: AppColors.accentTeal,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
               const Spacer(),
 
-              // Metrics Grid (Pace, Time, Calories)
+              // Metrics Grid
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   color: AppColors.cardBackground,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.cardBorder),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildMetric('PACE', runProvider.formattedPace, '/mi'),
+                    if (isTreadmill)
+                      _buildMetric('CADENCE', '${runProvider.currentCadence}', 'spm')
+                    else
+                      _buildMetric('PACE', runProvider.formattedPace, '/mi'),
                     Container(height: 36, width: 1, color: AppColors.divider),
                     _buildMetric('TIME', runProvider.formattedDuration, ''),
                     Container(height: 36, width: 1, color: AppColors.divider),
@@ -106,12 +129,11 @@ class ActiveRunScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 36),
+              const SizedBox(height: 32),
 
-              // Action Buttons Row
+              // Action Buttons Row (Pause/Resume + Finish)
               Row(
                 children: [
-                  // Pause / Resume Button
                   Expanded(
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
@@ -120,8 +142,8 @@ class ActiveRunScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 18),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
-                          side: const BorderSide(color: AppColors.cardBorder),
                         ),
+                        elevation: 0,
                       ),
                       icon: Icon(runProvider.isPaused ? Icons.play_arrow_rounded : Icons.pause_rounded),
                       label: Text(
@@ -132,14 +154,14 @@ class ActiveRunScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 14),
-                  // Finish & Save Button
                   Expanded(
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.accentTeal,
+                        backgroundColor: AppColors.accentGreen,
                         foregroundColor: Colors.black,
                         padding: const EdgeInsets.symmetric(vertical: 18),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        elevation: 0,
                       ),
                       icon: const Icon(Icons.check_rounded),
                       label: const Text(
@@ -153,7 +175,7 @@ class ActiveRunScreen extends StatelessWidget {
                           if (record != null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('🏃 Awesome run! ${record.distanceMiles.toStringAsFixed(2)} mi recorded.'),
+                                content: Text('🏃 Session saved! ${record.distanceMiles.toStringAsFixed(2)} mi recorded.'),
                                 backgroundColor: AppColors.accentGreen,
                                 behavior: SnackBarBehavior.floating,
                               ),
@@ -165,7 +187,7 @@ class ActiveRunScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
             ],
           ),
         ),
@@ -185,7 +207,7 @@ class ActiveRunScreen extends StatelessWidget {
               value,
               style: const TextStyle(
                 color: AppColors.textPrimary,
-                fontSize: 22,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -203,7 +225,7 @@ class ActiveRunScreen extends StatelessWidget {
           label,
           style: const TextStyle(
             color: AppColors.textSecondary,
-            fontSize: 11,
+            fontSize: 10,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.5,
           ),
