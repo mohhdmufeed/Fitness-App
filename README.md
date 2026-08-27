@@ -10,7 +10,7 @@
 
 **A high-performance, offline-first mobile fitness and health tracking application built with Flutter, Firebase, and a modern Warm Off-White / Pastel Red design system.**
 
-[Screenshots](#-app-screenshots) • [Features](#-key-features) • [Architecture](#-system-architecture) • [Getting Started](#-getting-started) • [License](#-license)
+[Screenshots](#-app-screenshots) • [Features](#-key-features) • [Architecture](#-system-architecture) • [Getting Started](#-getting-started) • [Author](#-author)
 
 </div>
 
@@ -140,8 +140,8 @@ flutter_app/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Techteam-zephvion/FitnessApp.git
-   cd FitnessApp/flutter_app
+   git clone https://github.com/mohhdmufeed/Fitness-App.git
+   cd Fitness-App/flutter_app
    ```
 
 2. **Install dependencies**:
@@ -158,6 +158,19 @@ flutter_app/
    ```bash
    flutter build apk --release
    ```
+
+---
+
+## 👨‍💻 Author
+
+<div align="center">
+
+**Mohd Mufeed**
+
+GitHub: [@mohhdmufeed](https://github.com/mohhdmufeed)  
+Repository: [mohhdmufeed/Fitness-App](https://github.com/mohhdmufeed/Fitness-App)
+
+</div>
 
 ---
 
