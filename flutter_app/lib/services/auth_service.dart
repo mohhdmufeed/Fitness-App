@@ -7,7 +7,14 @@ import '../models/user_model.dart';
 import 'firestore_service.dart';
 
 class AuthService {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FirebaseAuth? get _firebaseAuth {
+    try {
+      return FirebaseAuth.instance;
+    } catch (_) {
+      return null;
+    }
+  }
+
   final FirestoreService _firestoreService = FirestoreService();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
   static const _uuid = Uuid();
@@ -16,8 +23,21 @@ class AuthService {
   static const String _activeUserEmailKey = 'kf_active_user_email';
   static const String _userPrefix = 'kf_user_sec_';
 
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
-  User? get currentUser => _firebaseAuth.currentUser;
+  Stream<User?> get authStateChanges {
+    try {
+      return _firebaseAuth?.authStateChanges() ?? const Stream.empty();
+    } catch (_) {
+      return const Stream.empty();
+    }
+  }
+
+  User? get currentUser {
+    try {
+      return _firebaseAuth?.currentUser;
+    } catch (_) {
+      return null;
+    }
+  }
 
   /// Generate SHA-256 cryptographic hash of the password
   String _hashPassword(String password) {
@@ -36,30 +56,33 @@ class AuthService {
 
     // 1. Try Firebase Authentication first
     try {
-      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: cleanEmail,
-        password: password,
-      );
-
-      final user = userCredential.user;
-      if (user != null) {
-        await user.updateDisplayName(cleanName);
-
-        final userModel = UserModel(
-          uid: user.uid,
-          name: cleanName,
+      final auth = _firebaseAuth;
+      if (auth != null) {
+        final userCredential = await auth.createUserWithEmailAndPassword(
           email: cleanEmail,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
+          password: password,
         );
 
-        try {
-          await _firestoreService.createUserProfile(userModel);
-        } catch (_) {}
+        final user = userCredential.user;
+        if (user != null) {
+          await user.updateDisplayName(cleanName);
 
-        // Save local secure fallback
-        await _saveLocalSecureUser(userModel, password);
-        return userModel;
+          final userModel = UserModel(
+            uid: user.uid,
+            name: cleanName,
+            email: cleanEmail,
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          );
+
+          try {
+            await _firestoreService.createUserProfile(userModel);
+          } catch (_) {}
+
+          // Save local secure fallback
+          await _saveLocalSecureUser(userModel, password);
+          return userModel;
+        }
       }
     } on FirebaseAuthException catch (e) {
       // If error is genuine duplicate email or weak password, raise it
@@ -99,25 +122,26 @@ class AuthService {
 
     // 1. Try Firebase Authentication first
     try {
-      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
-        email: cleanEmail,
-        password: password,
-      );
+      final auth = _firebaseAuth;
+      if (auth != null) {
+        final userCredential = await auth.signInWithEmailAndPassword(
+          email: cleanEmail,
+          password: password,
+        );
 
-      final user = userCredential.user;
-      if (user != null) {
-        var userModel = await _firestoreService.getUserProfile(user.uid);
-        if (userModel == null) {
-          userModel = UserModel(
+        final user = userCredential.user;
+        if (user != null) {
+          var userModel = await _firestoreService.getUserProfile(user.uid);
+          userModel ??= UserModel(
             uid: user.uid,
             name: user.displayName ?? 'Athlete',
             email: user.email ?? cleanEmail,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
           );
+          await _saveLocalSecureUser(userModel, password);
+          return userModel;
         }
-        await _saveLocalSecureUser(userModel, password);
-        return userModel;
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {
@@ -180,7 +204,9 @@ class AuthService {
   Future<void> sendPasswordResetEmail(String email) async {
     final cleanEmail = email.trim().toLowerCase();
     try {
-      await _firebaseAuth.sendPasswordResetEmail(email: cleanEmail);
+      if (_firebaseAuth != null) {
+        await _firebaseAuth!.sendPasswordResetEmail(email: cleanEmail);
+      }
     } catch (_) {
       // Local password reset confirmation
       final userRaw = await _secureStorage.read(key: '$_userPrefix$cleanEmail');
@@ -193,7 +219,9 @@ class AuthService {
   /// Sign out current user
   Future<void> signOut() async {
     try {
-      await _firebaseAuth.signOut();
+      if (_firebaseAuth != null) {
+        await _firebaseAuth!.signOut();
+      }
     } catch (_) {}
     await _secureStorage.delete(key: _activeUserKey);
     await _secureStorage.delete(key: _activeUserEmailKey);

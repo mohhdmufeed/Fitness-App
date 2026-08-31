@@ -25,6 +25,12 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
     _filtered = _allExercises;
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   void _filter() {
     final query = _searchController.text.toLowerCase().trim();
     setState(() {
@@ -69,7 +75,7 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<BodyPart>(
-                value: selectedPart,
+                initialValue: selectedPart,
                 dropdownColor: AppColors.cardBackground,
                 style: const TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
@@ -171,7 +177,7 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
                     _filter();
                   },
                   backgroundColor: AppColors.cardBackground,
-                  selectedColor: AppColors.accentGreen.withOpacity(0.25),
+                  selectedColor: AppColors.accentGreen.withValues(alpha: 0.25),
                   checkmarkColor: AppColors.accentGreen,
                   labelStyle: TextStyle(
                     color: _selectedCategory == null ? AppColors.accentGreen : AppColors.textSecondary,
@@ -190,7 +196,7 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
                         _filter();
                       },
                       backgroundColor: AppColors.cardBackground,
-                      selectedColor: AppColors.accentGreen.withOpacity(0.25),
+                      selectedColor: AppColors.accentGreen.withValues(alpha: 0.25),
                       checkmarkColor: AppColors.accentGreen,
                       labelStyle: TextStyle(
                         color: _selectedCategory == bp ? AppColors.accentGreen : AppColors.textSecondary,
@@ -208,7 +214,7 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
           Expanded(
             child: ListView.separated(
               itemCount: _filtered.length,
-              separatorBuilder: (_, __) => const Divider(height: 1, indent: 16, endIndent: 16),
+              separatorBuilder: (context, index) => const Divider(height: 1, indent: 16, endIndent: 16),
               itemBuilder: (context, index) {
                 final exercise = _filtered[index];
                 return ListTile(

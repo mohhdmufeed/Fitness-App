@@ -152,4 +152,10 @@ class RunProvider extends ChangeNotifier {
     final minutes = _elapsedSeconds / 60.0;
     return (_currentSteps / minutes).round();
   }
+
+  @override
+  void dispose() {
+    _runTimer?.cancel();
+    super.dispose();
+  }
 }

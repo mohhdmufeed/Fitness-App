@@ -17,12 +17,15 @@ class _AuthGateState extends State<AuthGate> {
   bool _isCheckingBiometric = false;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _checkBiometricsIfNeeded();
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkBiometricsIfNeeded();
+    });
   }
 
   Future<void> _checkBiometricsIfNeeded() async {
+    if (!mounted) return;
     final auth = context.read<AuthProvider>();
 
     if (auth.isAuthenticated && auth.isBiometricsEnabled && !_biometricChecked && !_isCheckingBiometric) {
@@ -41,7 +44,7 @@ class _AuthGateState extends State<AuthGate> {
         }
       }
     } else {
-      if (!_biometricChecked) {
+      if (!_biometricChecked && mounted) {
         setState(() => _biometricChecked = true);
       }
     }

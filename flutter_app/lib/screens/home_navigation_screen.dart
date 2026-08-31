@@ -42,7 +42,7 @@ class _HomeNavigationScreenState extends State<HomeNavigationScreen> {
         child: NavigationBarTheme(
           data: NavigationBarThemeData(
             backgroundColor: AppColors.navBar,
-            indicatorColor: AppColors.accentGreen.withOpacity(0.18),
+            indicatorColor: AppColors.accentGreen.withValues(alpha: 0.18),
             labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((states) {
               if (states.contains(WidgetState.selected)) {
                 return const TextStyle(

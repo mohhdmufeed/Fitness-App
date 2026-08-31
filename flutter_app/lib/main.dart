@@ -35,18 +35,7 @@ Future<void> main() async {
     ),
   );
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => WorkoutProvider()),
-        ChangeNotifierProvider(create: (_) => MacroProvider()),
-        ChangeNotifierProvider(create: (_) => RunProvider()),
-        ChangeNotifierProvider(create: (_) => ProgressProvider()),
-      ],
-      child: const KineticFusionApp(),
-    ),
-  );
+  runApp(const KineticFusionApp());
 }
 
 class KineticFusionApp extends StatelessWidget {
@@ -54,11 +43,20 @@ class KineticFusionApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kinetic Fusion',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      home: const AuthGate(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => WorkoutProvider()),
+        ChangeNotifierProvider(create: (_) => MacroProvider()),
+        ChangeNotifierProvider(create: (_) => RunProvider()),
+        ChangeNotifierProvider(create: (_) => ProgressProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Kinetic Fusion',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        home: const AuthGate(),
+      ),
     );
   }
 }

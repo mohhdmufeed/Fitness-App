@@ -28,6 +28,12 @@ class _LogWithAiScreenState extends State<LogWithAiScreen> {
     _selectedMealType = widget.initialMealType;
   }
 
+  @override
+  void dispose() {
+    _inputController.dispose();
+    super.dispose();
+  }
+
   void _runAiEstimation() {
     final text = _inputController.text.trim();
     if (text.isEmpty) return;
@@ -36,7 +42,9 @@ class _LogWithAiScreenState extends State<LogWithAiScreen> {
 
     // Instant on-device local estimation
     Future.delayed(const Duration(milliseconds: 300), () {
+      if (!mounted) return;
       final items = context.read<MacroProvider>().estimateMacrosFromText(text);
+      if (!mounted) return;
       setState(() {
         _estimatedItems = items;
         _isEstimating = false;
@@ -211,7 +219,7 @@ class _LogWithAiScreenState extends State<LogWithAiScreen> {
                     ],
                   ),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.accentGreen.withOpacity(0.4)),
+                  border: Border.all(color: AppColors.accentGreen.withValues(alpha: 0.4)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

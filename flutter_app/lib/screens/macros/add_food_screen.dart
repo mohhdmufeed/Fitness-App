@@ -22,6 +22,17 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
   final _fatController = TextEditingController();
   final _servingController = TextEditingController(text: '1 serving');
 
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _caloriesController.dispose();
+    _proteinController.dispose();
+    _carbsController.dispose();
+    _fatController.dispose();
+    _servingController.dispose();
+    super.dispose();
+  }
+
   void _saveFood() {
     final name = _nameController.text.trim();
     final calories = double.tryParse(_caloriesController.text.trim()) ?? 0.0;

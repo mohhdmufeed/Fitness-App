@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../models/workout.dart';
 import '../../providers/workout_provider.dart';
 import '../../theme/app_colors.dart';
 
@@ -52,7 +51,7 @@ class TemplatesScreen extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
-                                color: AppColors.accentTeal.withOpacity(0.15),
+                                color: AppColors.accentTeal.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
